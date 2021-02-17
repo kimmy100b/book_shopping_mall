@@ -9,7 +9,7 @@
 <c:set var="imageList" value="${goodsMap.imageList }" />
 <%
 	pageContext.setAttribute("crcn", "\n"); //Ajax로 변경 시 개행 문자 
-	pageContext.setAttribute("br", "<br/>"); //br 태그
+pageContext.setAttribute("br", "<br/>"); //br 태그
 %>
 <html>
 <head>
@@ -40,37 +40,39 @@
 }
 </style>
 <script type="text/javascript">
-	function add_cart(goods_id) {
+	function add_cart(goods_id, order_goods_qty) {
 		var _isLogOn = document.getElementById("isLogOn");
 		var isLogOn = _isLogOn.value;
 
 		if (isLogOn == "false" || isLogOn == '') {
 			alert("로그인 후 장바구니 기능을 사용하실 수 있습니다!!!");
 			return false;
-		}
-		
-		$.ajax({
-			type : "post",
-			async : false,
-			url : "${contextPath}/cart/addGoodsInCart.do",
-			data : {
-				goods_id : goods_id
+		} else {
+			var order_goods_qty = $('#order_goods_qty').val();
 
-			},
-			success : function(data, textStatus) {
-				if (data.trim() == 'add_success') {
-					imagePopup('open', '.layer01');
-				} else if (data.trim() == 'already_existed') {
-					alert("이미 카트에 등록된 상품입니다.");
+			$.ajax({
+				type : "post",
+				async : false,
+				url : "${contextPath}/cart/addGoodsInCart.do",
+				data : {
+					goods_id : goods_id,
+					cart_goods_qty : order_goods_qty
+				},
+				success : function(data, textStatus) {
+					if (data.trim() == 'add_success') {
+						imagePopup('open', '.layer01');
+					} else if (data.trim() == 'already_existed') {
+						alert("이미 카트에 등록된 상품입니다.");
+					}
+
+				},
+				error : function(data, textStatus) {
+					alert("에러가 발생했습니다." + data);
+				},
+				complete : function(data, textStatus) {
 				}
-
-			},
-			error : function(data, textStatus) {
-				alert("에러가 발생했습니다." + data);
-			},
-			complete : function(data, textStatus) {
-			}
-		}); //end ajax	
+			}); //end ajax	
+		}
 	}
 
 	function imagePopup(type) {
