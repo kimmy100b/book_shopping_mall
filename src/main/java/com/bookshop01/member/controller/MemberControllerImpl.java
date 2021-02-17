@@ -81,7 +81,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		try {
 			memberService.addMember(_memberVO);
 			message = "<script>";
-			message += " alert('회원 가입을 마쳤습니다.로그인창으로 이동합니다.');";
+			message += " alert('회원가입이 완료되었습니다. 로그인창으로 이동합니다.');";
 			message += " location.href='" + request.getContextPath() + "/member/loginForm.do';";
 			message += " </script>";
 

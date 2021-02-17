@@ -96,53 +96,77 @@
 		}); //end ajax	 
 	} //end fn_overlapped()
 
-	function fn_submit() {
-		// 유효성 검사 및 비밀번호 중복체크
+	function fn_compare_pwd() { // 비밀번호 비교
+		var pwd1 = $('#member_pw1').val();
+		var pwd2 = $('#member_pw2').val();
+		var pwd_result = $('#pwd_result');
+
+		if (pwd1 == pwd2) {
+			compare_result = true;
+			pwd_result.text('비밀번호가 일치합니다.');
+		} else {
+			compare_result = false;
+			pwd_result.text('비밀번호가 일치하지 않습니다.');
+		}
+	}
+
+	function fn_submit() { // 유효성 검사 및 비밀번호 중복체크
 		if ($('input[name="_member_id"]').val() == '') {
-			alert("ID를 입력하세요");
+			alert("ID를 입력하세요.");
 			$('input[name="_member_id"]').focus();
 			return;
 		}
 
 		if ($('#chk_member_id').val() == 'n') {
-			alert("아이디 중복체크를 하세요");
+			alert("아이디 중복체크를 하세요.");
 			$('input[name="_member_id"]').focus();
 			return;
 		}
 
 		if ($('input[name="member_pw"]').val() == '') {
-			alert("비밀번호를 입력하세요");
+			alert("비밀번호를 입력하세요.");
 			$('input[name="member_pw"]').focus();
 			return;
 		}
 
+		if ($('input[name="member_pw2"]').val() == '') {
+			alert("비밀번호 확인을 입력하세요.");
+			$('input[name="member_pw2"]').focus();
+			return;
+		}
+
 		if ($('input[name="member_name"]').val() == '') {
-			alert("이름을 입력하세요");
+			alert("이름을 입력하세요.");
 			$('input[name="member_name"]').focus();
 			return;
 		}
 
 		if ($('input[name="hp2"]').val() == '') {
-			alert("휴대폰번호를 입력하세요");
+			alert("휴대폰번호를 입력하세요.");
 			$('input[name="hp2"]').focus();
 			return;
 		}
 
 		if ($('input[name="hp3"]').val() == '') {
-			alert("휴대폰번호를 입력하세요");
+			alert("휴대폰번호를 입력하세요.");
 			$('input[name="hp3"]').focus();
 			return;
 		}
-		
+
 		if ($('input[name="email1"]').val() == '') {
-			alert("이메일을 입력하세요");
+			alert("이메일을 입력하세요.");
 			$('input[name="hp3"]').focus();
 			return;
 		}
-		
+
 		if ($('input[name="email2"]').val() == '') {
-			alert("이메일을 입력하세요");
+			alert("이메일을 입력하세요.");
 			$('input[name="hp3"]').focus();
+			return;
+		}
+
+		if (compare_result == false) {
+			alert("비밀번호가 일치하지 않습니다.");
 			return;
 		}
 
@@ -152,7 +176,7 @@
 </head>
 <body>
 	<h3>회원가입</h3>
-	<span>(*은 필수 입력입니다.)</span>
+	<span style="font-size: 13px;">(*은 필수 입력입니다.)</span>
 	<form action="${contextPath}/member/addMember.do" method="post"
 		id="member_frm">
 		<div id="detail_table">
@@ -168,14 +192,21 @@
 					</tr>
 					<tr class="dot_line">
 						<td class="fixed_join">*비밀번호</td>
-						<td><input name="member_pw" type="password" size="20" /></td>
+						<td><input name="member_pw" id="member_pw1" type="password"
+							size="20" onKeyUp="fn_compare_pwd()" /></td>
+					</tr>
+					<tr class="dot_line">
+						<td class="fixed_join">*비밀번호 확인</td>
+						<td><input name="member_pw2" id="member_pw2" type="password"
+							size="20" onKeyUp="fn_compare_pwd()" /> <span id="pwd_result"
+							style="font-size: 10px; color: red;">비밀번호를 일치하지 않습니다.</span></td>
 					</tr>
 					<tr class="dot_line">
 						<td class="fixed_join">*이름</td>
 						<td><input name="member_name" type="text" size="20" /></td>
 					</tr>
 					<tr class="dot_line">
-						<td class="fixed_join">성별</td>
+						<td class="fixed_join">*성별</td>
 						<td><input type="radio" name="member_gender" value="102" />
 							여성<span style="padding-left: 120px"></span> <input type="radio"
 							name="member_gender" value="101" checked />남성</td>
