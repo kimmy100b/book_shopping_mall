@@ -34,6 +34,7 @@ public class CartControllerImpl extends BaseController implements CartController
 	@Autowired
 	private MemberVO memberVO;
 
+	/** 장바구니 목록 가져오기 **/
 	@RequestMapping(value = "/myCartList.do", method = RequestMethod.GET)
 	public ModelAndView myCartMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String) request.getAttribute("viewName");
@@ -47,6 +48,7 @@ public class CartControllerImpl extends BaseController implements CartController
 		return mav;
 	}
 
+	/** 장바구니에 제품 추가하기 **/
 	@RequestMapping(value = "/addGoodsInCart.do", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public @ResponseBody String addGoodsInCart(@RequestParam("goods_id") int goods_id,
 			@RequestParam("cart_goods_qty") int cart_goods_qty, HttpServletRequest request,
@@ -55,10 +57,10 @@ public class CartControllerImpl extends BaseController implements CartController
 		memberVO = (MemberVO) session.getAttribute("memberInfo");
 		String member_id = memberVO.getMember_id();
 		
-		
 		cartVO.setGoods_id(goods_id);
 		cartVO.setMember_id(member_id);
 		cartVO.setCart_goods_qty(cart_goods_qty);
+		
 		boolean isAreadyExisted = cartService.findCartGoods(cartVO);// 카트 등록전에 이미 등록된 제품인지 판별한다.
 		System.out.println("isAreadyExisted:" + isAreadyExisted);
 		if (isAreadyExisted == true) {
@@ -69,6 +71,7 @@ public class CartControllerImpl extends BaseController implements CartController
 		}
 	}
 
+	/** 장바구니에 담긴 제품의 수량 수정하기 **/
 	@RequestMapping(value = "/modifyCartQty.do", method = RequestMethod.POST)
 	public @ResponseBody String modifyCartQty(@RequestParam("goods_id") int goods_id,
 			@RequestParam("cart_goods_qty") int cart_goods_qty, HttpServletRequest request,
@@ -79,6 +82,7 @@ public class CartControllerImpl extends BaseController implements CartController
 		cartVO.setGoods_id(goods_id);
 		cartVO.setMember_id(member_id);
 		cartVO.setCart_goods_qty(cart_goods_qty);
+		
 		boolean result = cartService.modifyCartQty(cartVO);
 
 		if (result == true) {
@@ -89,6 +93,7 @@ public class CartControllerImpl extends BaseController implements CartController
 
 	}
 
+	/** 장바구니에 담긴 제품 삭제하기 **/
 	@RequestMapping(value = "/removeCartGoods.do", method = RequestMethod.POST)
 	public ModelAndView removeCartGoods(@RequestParam("cart_id") int cart_id, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
