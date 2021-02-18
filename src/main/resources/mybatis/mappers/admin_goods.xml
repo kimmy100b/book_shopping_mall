@@ -396,11 +396,11 @@
 			<if test=" goods_intro!='' and goods_intro!=null">
 				goods_intro=#{goods_intro},
 			</if>
-			<if test=" publisher_comment!='' and publisher_comment!=null">
-				publisher_comment=#{publisher_comment},
+			<if test=" goods_publisher_comment!='' and goods_publisher_comment!=null">
+				goods_publisher_comment=#{goods_publisher_comment},
 			</if>
-			<if test=" recommendation!='' and recommendation!=null">
-				recommendation=#{recommendation},
+			<if test=" goods_recommendation!='' and goods_recommendation!=null">
+				goods_recommendation=#{goods_recommendation},
 			</if>
 			<if
 				test=" goods_contents_order!='' and goods_contents_order!=null">

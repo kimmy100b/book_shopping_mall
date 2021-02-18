@@ -9,7 +9,7 @@
 <c:set var="imageList" value="${goodsMap.imageList }" />
 <%
 	pageContext.setAttribute("crcn", "\n"); //Ajax로 변경 시 개행 문자 
-pageContext.setAttribute("br", "<br/>"); //br 태그
+	pageContext.setAttribute("br", "<br/>"); //br 태그
 %>
 <html>
 <head>
@@ -88,14 +88,15 @@ pageContext.setAttribute("br", "<br/>"); //br 태그
 		}
 	}
 
-	function fn_order_each_goods(goods_id, goods_title, goods_sales_price, fileName) {
+	function fn_order_each_goods(goods_id, goods_title, goods_sales_price,
+			fileName) {
 		var _isLogOn = document.getElementById("isLogOn");
 		var isLogOn = _isLogOn.value;
-		
+
 		if (isLogOn == "false" || isLogOn == '') {
 			alert("로그인 후 주문이 가능합니다!!!");
 		}
-		
+
 		var total_price, final_total_price;
 		var order_goods_qty = document.getElementById("order_goods_qty");
 
@@ -234,6 +235,7 @@ pageContext.setAttribute("br", "<br/>"); //br 태그
 		<div class="tab_container">
 			<div class="tab_content" id="tab1">
 				<h4>책소개</h4>
+				<p>${goods.goods_intro}</p>
 				<c:forEach var="image" items="${imageList }">
 					<img
 						src="${contextPath}/download.do?goods_id=${goods.goods_id}&fileName=${image.fileName}">
