@@ -7,10 +7,10 @@ public class GoodsVO {
 	private int goods_id;
 	private String goods_title;
 	private String goods_writer;
-	private int goods_price;
+	private int goods_price; //상품정가
 	private String goods_publisher;
 	private String goods_sort;
-	private int goods_sales_price;
+	private int goods_sales_price; //상품판매가격
 	private int goods_point;
 	private Date goods_published_date;
 	private int goods_total_page;

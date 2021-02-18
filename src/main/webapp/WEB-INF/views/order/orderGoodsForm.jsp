@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!-- 주문자 휴대폰 번호 -->
 <c:set var="orderer_hp" value="" />
@@ -269,7 +270,7 @@
 				|| $('input[name="namujiAddress"]').val() == '') {
 			return "주소를 입력해주세요";
 		}
-		*/
+		 */
 	}
 
 	function fn_show_order_detail() {
@@ -350,7 +351,7 @@
 							.getElementById("card_pay_month");
 					card_com_name = i_card_com_name.value;
 					card_pay_month = i_card_pay_month.value;
-					pay_method += "<Br>" + "카드사:" + card_com_name + "<br>"
+					pay_method += "<br>" + "카드사:" + card_com_name + "<br>"
 							+ "할부개월수:" + card_pay_month;
 					pay_orderer_hp_num = "해당없음";
 
@@ -364,7 +365,7 @@
 					pay_orderer_hp_num = i_pay_order_tel1.value + "-"
 							+ i_pay_order_tel2.value + "-"
 							+ i_pay_order_tel3.value;
-					pay_method += "<Br>" + "결제휴대폰번호:" + pay_orderer_hp_num;
+					pay_method += "<br>" + "결제휴대폰번호:" + pay_orderer_hp_num;
 					card_com_name = "해당없음";
 					card_pay_month = "해당없음";
 				} //end if
@@ -535,7 +536,8 @@
 				<tr style="background: #33ff00">
 					<td colspan=2 class="fixed">주문상품명</td>
 					<td>수량</td>
-					<td>주문금액</td>
+					<td>정가</td>
+					<td>판매가</td>
 					<td>배송비</td>
 					<td>예상적립금</td>
 					<td>주문금액합계</td>
@@ -564,19 +566,28 @@
 									<input type="hidden" id="h_order_goods_qty"
 										name="h_order_goods_qty" value="${item.order_goods_qty}" />
 						</td>
-						<td><h2>${item.goods_sales_price}원(10%할인)</h2></td>
+						<td><h2>${item.goods_sales_price}원</h2></td>
+						<td><h2>
+								<fmt:formatNumber value="${item.goods_sales_price*0.9}"
+									type="number" var="discounted_price" />
+								${discounted_price}원(10%할인)
+							</h2></td>
 						<td><h2>0원</h2></td>
 						<td><h2>${1500 *item.order_goods_qty}원</h2></td>
 						<td>
-							<h2>${item.goods_sales_price * item.order_goods_qty}원</h2> <input
-							type="hidden" id="h_each_goods_price" name="h_each_goods_price"
-							value="${item.goods_sales_price * item.order_goods_qty}" />
+							<h2>
+								<fmt:formatNumber
+									value="${item.goods_sales_price * 0.9 * item.order_goods_qty}"
+									type="number" var="total_goods_price" />
+								${total_goods_price}원
+							</h2> <input type="hidden" id="h_each_goods_price"
+							name="h_each_goods_price" value="${total_goods_price}" />
 						</td>
 				</tr>
-				<c:set var="final_total_order_price"
-					value="${final_total_order_price+ item.goods_sales_price* item.order_goods_qty}" />
-				<c:set var="total_order_price"
-					value="${total_order_price+ item.goods_sales_price* item.order_goods_qty}" />
+				<c:set var="finalTotalOrderPrice"
+					value="${finalTotalOrderPrice+ item.goods_sales_price * 0.9 * item.order_goods_qty}" />
+				<c:set var="totalOrderPrice"
+					value="${totalOrderPrice+item.goods_sales_price * 0.9 * item.order_goods_qty }" />
 				<c:set var="total_order_goods_qty"
 					value="${total_order_goods_qty+item.order_goods_qty }" />
 				</c:forEach>
@@ -798,8 +809,12 @@
 						value="${total_order_goods_qty}" />
 					</td>
 					<td>
-						<p id="p_totalPrice">${total_order_price}원</p> <input
-						id="h_totalPrice" type="hidden" value="${total_order_price}" />
+						<p id="p_totalPrice">
+							<fmt:formatNumber value="${totalOrderPrice}" type="number"
+								var="total_order_price" />
+							${total_order_price}원
+						</p> <input id="h_totalPrice" type="hidden"
+						value="${total_order_price}" />
 					</td>
 					<td><IMG width="25" alt=""
 						src="${pageContext.request.contextPath}/resources/image/plus.jpg"></td>
@@ -818,6 +833,8 @@
 						src="${pageContext.request.contextPath}/resources/image/equal.jpg"></td>
 					<td>
 						<p id="p_final_totalPrice">
+							<fmt:formatNumber value="${finalTotalOrderPrice}" type="number"
+								var="final_total_order_price" />
 							<font size="15">${final_total_order_price }원 </font>
 						</p> <input id="h_final_total_Price" type="hidden"
 						value="${final_total_order_price}" />

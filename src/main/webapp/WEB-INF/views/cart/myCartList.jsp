@@ -210,7 +210,7 @@ function fn_order_all_cart_goods(){
 								</td>
 								<td class="price"><span>${item.goods_price }원</span></td>
 								<td><strong> <fmt:formatNumber
-											value="${item.goods_sales_price*0.9}" type="number"
+											value="${item.goods_sales_price}" type="number"
 											var="discounted_price" /> ${discounted_price}원(10%할인)
 								</strong></td>
 								<td><input type="text" id="cart_goods_qty"
@@ -221,7 +221,7 @@ function fn_order_all_cart_goods(){
 										src="${contextPath}/resources/image/btn_modify_qty.jpg">
 								</a></td>
 								<td><strong> <fmt:formatNumber
-											value="${item.goods_sales_price*0.9*cart_goods_qty}"
+											value="${item.goods_sales_price*cart_goods_qty}"
 											type="number" var="total_sales_price" />
 										${total_sales_price}원
 								</strong></td>
@@ -233,15 +233,15 @@ function fn_order_all_cart_goods(){
 										src="${contextPath}/resources/image/btn_order_later.jpg">
 								</a><br> <a href="#"> <img width="75" alt=""
 										src="${contextPath}/resources/image/btn_add_list.jpg">
-								</a><br> <a href="javascript:delete_cart_goods('${cart_id}');"">
+								</a><br> <a href="javascript:delete_cart_goods('${cart_id}');">
 										<img width="75" alt=""
 										src="${contextPath}/resources/image/btn_delete.jpg">
 								</a></td>
 					</tr>
 
 					<c:set var="totalGoodsPrice"
-						value="${totalGoodsPrice+item.goods_sales_price*0.9*cart_goods_qty }" />
-					<c:set var="totalGoodsNum" value="${totalGoodsNum+1 }" />
+						value="${totalGoodsPrice+item.goods_sales_price*cart_goods_qty }" />
+					<c:set var="totalGoodsNum" value="${totalGoodsNum+cart_goods_qty }" />
 					</c:forEach>
 		</tbody>
 	</table>
