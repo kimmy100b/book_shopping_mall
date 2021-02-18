@@ -31,6 +31,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 	@Autowired
 	private OrderVO orderVO;
 	
+	/** 제품상세페이지에서 주문 페이지 이동 및 주문 정보 넘기기 **/
 	@RequestMapping(value="/orderEachGoods.do" ,method = RequestMethod.POST)
 	public ModelAndView orderEachGoods(@ModelAttribute("orderVO") OrderVO _orderVO,
 			                       HttpServletRequest request, HttpServletResponse response)  throws Exception{
@@ -41,14 +42,14 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		
 		Boolean isLogOn=(Boolean)session.getAttribute("isLogOn");
 		String action=(String)session.getAttribute("action");
-		//로그인 여부 체크
-		//이전에 로그인 상태인 경우는 주문과정 진행
-		//로그아웃 상태인 경우 로그인 화면으로 이동
+		// 로그인 여부 체크
+		// 이전에 로그인 상태인 경우는 주문과정 진행
+		// 로그아웃 상태인 경우 로그인 화면으로 이동
 		if(isLogOn==null || isLogOn==false){
 			session.setAttribute("orderInfo", _orderVO);
 			session.setAttribute("action", "/order/orderEachGoods.do");
 			return new ModelAndView("redirect:/member/loginForm.do");
-		}else{
+		}else{ // 로그인 성공
 			 if(action!=null && action.equals("/order/orderEachGoods.do")){
 				orderVO=(OrderVO)session.getAttribute("orderInfo");
 				session.removeAttribute("action");
@@ -70,6 +71,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		return mav;
 	}
 	
+	/** 장바구니에 있는 제품을 구매할 경우 **/
 	@RequestMapping(value="/orderAllCartGoods.do" ,method = RequestMethod.POST)
 	public ModelAndView orderAllCartGoods( @RequestParam("cart_goods_qty")  String[] cart_goods_qty,
 			                 HttpServletRequest request, HttpServletResponse response)  throws Exception{
@@ -107,6 +109,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		return mav;
 	}	
 	
+	/** 주문 정보를 저장하기 **/
 	@RequestMapping(value="/payToOrderGoods.do" ,method = RequestMethod.POST)
 	public ModelAndView payToOrderGoods(@RequestParam Map<String, String> receiverMap,
 			                       HttpServletRequest request, HttpServletResponse response)  throws Exception{
@@ -120,7 +123,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		String orderer_hp = memberVO.getHp1()+"-"+memberVO.getHp2()+"-"+memberVO.getHp3();
 		List<OrderVO> myOrderList=(List<OrderVO>)session.getAttribute("myOrderList");
 		
-		for(int i=0; i<myOrderList.size();i++){
+		for(int i=0; i<myOrderList.size();i++){ 
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
 			orderVO.setMember_id(member_id);
 			orderVO.setOrderer_name(orderer_name);
@@ -142,11 +145,11 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 			orderVO.setCard_pay_month(receiverMap.get("card_pay_month"));
 			orderVO.setPay_orderer_hp_num(receiverMap.get("pay_orderer_hp_num"));	
 			orderVO.setOrderer_hp(orderer_hp);	
-			myOrderList.set(i, orderVO); //각 orderVO에 주문자 정보를 세팅한 후 다시 myOrderList에 저장한다.
+			myOrderList.set(i, orderVO); // 각 orderVO에 주문자 정보를 세팅한 후 다시 myOrderList에 저장한다.
 		}//end for
 		
 	    orderService.addNewOrder(myOrderList);
-		mav.addObject("myOrderInfo",receiverMap);//OrderVO로 주문결과 페이지에  주문자 정보를 표시한다.
+		mav.addObject("myOrderInfo",receiverMap);// OrderVO로 주문결과 페이지에 주문자 정보를 표시한다.
 		mav.addObject("myOrderList", myOrderList);
 		return mav;
 	}

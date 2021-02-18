@@ -111,7 +111,8 @@
 	}
 
 	function fn_submit() { // 유효성 검사 및 비밀번호 중복체크
-		if ($('input[name="_member_id"]').val() == '') {
+		if ($('input[name="_member_id"]').val() == ''
+				|| $('input[name="_member_id"]').val() == null) {
 			alert("ID를 입력하세요.");
 			$('input[name="_member_id"]').focus();
 			return;
@@ -123,43 +124,50 @@
 			return;
 		}
 
-		if ($('input[name="member_pw"]').val() == '') {
+		if ($('input[name="member_pw"]').val() == ''
+				|| $('input[name="member_pw"]').val() == null) {
 			alert("비밀번호를 입력하세요.");
 			$('input[name="member_pw"]').focus();
 			return;
 		}
 
-		if ($('input[name="member_pw2"]').val() == '') {
+		if ($('input[name="member_pw2"]').val() == ''
+				|| $('input[name="member_pw2"]').val() == null) {
 			alert("비밀번호 확인을 입력하세요.");
 			$('input[name="member_pw2"]').focus();
 			return;
 		}
 
-		if ($('input[name="member_name"]').val() == '') {
+		if ($('input[name="member_name"]').val() == ''
+				|| $('input[name="member_name"]').val() == null) {
 			alert("이름을 입력하세요.");
 			$('input[name="member_name"]').focus();
 			return;
 		}
 
-		if ($('input[name="hp2"]').val() == '') {
+		if ($('input[name="hp2"]').val() == ''
+				|| $('input[name="hp2"]').val() == null) {
 			alert("휴대폰번호를 입력하세요.");
 			$('input[name="hp2"]').focus();
 			return;
 		}
 
-		if ($('input[name="hp3"]').val() == '') {
+		if ($('input[name="hp3"]').val() == ''
+				|| $('input[name="hp3"]').val() == null) {
 			alert("휴대폰번호를 입력하세요.");
 			$('input[name="hp3"]').focus();
 			return;
 		}
 
-		if ($('input[name="email1"]').val() == '') {
+		if ($('input[name="email1"]').val() == ''
+				|| $('input[name="email1"]').val() == null) {
 			alert("이메일을 입력하세요.");
 			$('input[name="hp3"]').focus();
 			return;
 		}
 
-		if ($('input[name="email2"]').val() == '') {
+		if ($('input[name="email2"]').val() == ''
+				|| $('input[name="email2"]').val() == null) {
 			alert("이메일을 입력하세요.");
 			$('input[name="hp3"]').focus();
 			return;
