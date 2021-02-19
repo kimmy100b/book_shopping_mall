@@ -267,7 +267,6 @@
 	</div>
 	<div class="clear"></div>
 	<div id="layer" style="visibility: hidden">
-		<!-- visibility:hidden 으로 설정하여 해당 div안의 모든것들을 가려둔다. -->
 		<div id="popup">
 			<!-- 팝업창 닫기 버튼 -->
 			<a href="javascript:"
@@ -277,6 +276,8 @@
 			<form action='${contextPath}/cart/myCartList.do'>
 				<input type="submit" value="장바구니 보기">
 			</form>
+		</div>
+	</div>
 </body>
 </html>
 <input type="hidden" name="isLogOn" id="isLogOn" value="${isLogOn}" />
