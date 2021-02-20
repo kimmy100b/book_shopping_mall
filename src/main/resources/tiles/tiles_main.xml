@@ -2,6 +2,8 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<!-- 메인관리 -->
 <tiles-definitions>
 	<definition name="baseLayout"
 		template="/WEB-INF/views/common/layout.jsp">
@@ -18,5 +20,3 @@
 		<put-attribute name="body" value="/WEB-INF/views/main/main.jsp" />
 	</definition>
 </tiles-definitions>
-
-

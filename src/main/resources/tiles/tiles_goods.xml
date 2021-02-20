@@ -2,6 +2,8 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<!-- 상품관리 -->
 <tiles-definitions>
 	  <definition name="/goods/goodsDetail" extends="baseLayout">
          <put-attribute name="title" value="" />
@@ -12,7 +14,4 @@
          <put-attribute name="title" value="상품 검색 결과 페이지" />
          <put-attribute name="body" value="/WEB-INF/views/goods/searchGoods.jsp" />
       </definition>
-  
 </tiles-definitions>
-
-

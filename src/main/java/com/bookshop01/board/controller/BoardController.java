@@ -1,25 +1,33 @@
-package com.bookshop01.cs.controller;
+package com.bookshop01.board.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-public interface CustomerServiceController {
+public interface BoardController {
+	
+	/** 게시물 목록 표시하기 **/
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
+	/** 새 글 추가하기 **/
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 
+	/** 특정 게시물 보기 **/
 	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
+	/** 게시물 수정하기 **/
 	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 
+	/** 게시물 삭제하기 **/
 	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
+
 }

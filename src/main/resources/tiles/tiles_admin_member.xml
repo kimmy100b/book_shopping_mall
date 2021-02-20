@@ -2,9 +2,9 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+ <!-- 회원관리 : 로그인했을때-->
 <tiles-definitions>
-    
-    <!-- 회원관리 -->
     <definition name="/admin/member/adminMemberMain" extends="baseLayout">
        <put-attribute name="title" value="회원 관리 페이지" />
        <put-attribute name="body" value="/WEB-INF/views/admin/member/adminMemberMain.jsp" />
@@ -14,5 +14,4 @@
        <put-attribute name="title" value="회원 상세 페이지" />
        <put-attribute name="body" value="/WEB-INF/views/admin/member/memberDetail.jsp" />
     </definition>    
-    
 </tiles-definitions>
