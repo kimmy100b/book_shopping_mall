@@ -17,23 +17,23 @@ public class BoardDAOImpl implements BoardDAO {
 	@Autowired
 	private SqlSession sqlSession;
 
-	/** °Ô½Ã¹° ¸ñ·Ï list·Î °¡Á®¿À±â **/
+	/** ê²Œì‹œë¬¼ ëª©ë¡ listë¡œ ê°€ì ¸ì˜¤ê¸° **/
 	@Override
 	public List selectAllArticlesList() throws DataAccessException {
 		List<ArticleVO> articlesList = articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList");
 		return articlesList;
 	}
 
-	/** »õ ±ÛÀÇ µ¥ÀÌÅÍ Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ì˜ ë°ì´í„° ì¶”ê°€í•˜ê¸° **/
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
 		int articleNO = selectNewArticleNO();
 		articleMap.put("articleNO", articleNO);
 		sqlSession.insert("mapper.board.insertNewArticle", articleMap);
-		return articleNO; // °Ô½Ã¹° ¹øÈ£ ¹İÈ¯
+		return articleNO; // ê²Œì‹œë¬¼ ë²ˆí˜¸ ë°˜í™˜
 	}
 
-	/** »õ ±ÛÀÇ Ã·ºÎÆÄÀÏ µ¥ÀÌÅÍ Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ì˜ ì²¨ë¶€íŒŒì¼ ë°ì´í„° ì¶”ê°€í•˜ê¸° **/
 	@Override
 	public void insertNewImage(Map articleMap) throws DataAccessException {
 		List<ImageVO> imageFileList = (ArrayList) articleMap.get("imageFileList");
@@ -46,26 +46,26 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("mapper.board.insertNewImage", imageFileList);
 	}
 
-	/** ÇØ´ç °Ô½Ã¹°ÀÇ µ¥ÀÌÅÍ °¡Á®¿À±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ì˜ ë°ì´í„° ê°€ì ¸ì˜¤ê¸° **/
 	@Override
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException {
 		return sqlSession.selectOne("mapper.board.selectArticle", articleNO);
 	}
 
-	/** ÇØ´ç °Ô½Ã¹° ¼öÁ¤ÇÏ±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ ìˆ˜ì •í•˜ê¸° **/
 	@Override
 	public void updateArticle(Map articleMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateArticle", articleMap);
 	}
 
-	/** ÇØ´ç °Ô½Ã¹° »èÁ¦ÇÏ±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ ì‚­ì œí•˜ê¸° **/
 	@Override
 	public void deleteArticle(int articleNO) throws DataAccessException {
 		sqlSession.delete("mapper.board.deleteArticle", articleNO);
 
 	}
 
-	/** ÇØ´ç °Ô½Ã¹°ÀÇ Ã·ºÎÆÄÀÏ °¡Á®¿À±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ì˜ ì²¨ë¶€íŒŒì¼ ê°€ì ¸ì˜¤ê¸° **/
 	@Override
 	public List selectImageFileList(int articleNO) throws DataAccessException {
 		List<ImageVO> imageFileList = null;
@@ -73,12 +73,12 @@ public class BoardDAOImpl implements BoardDAO {
 		return imageFileList;
 	}
 
-	/** »õ·Î Ãß°¡ÇÑ °Ô½Ã¹° articleNOÀ» °¡Á®¿À±â **/
+	/** ìƒˆë¡œ ì¶”ê°€í•œ ê²Œì‹œë¬¼ articleNOì„ ê°€ì ¸ì˜¤ê¸° **/
 	private int selectNewArticleNO() throws DataAccessException {
 		return sqlSession.selectOne("mapper.board.selectNewArticleNO");
 	}
 
-	/** »õ·Î Ãß°¡ÇÑ °Ô½Ã¹° imageFileNoÀ» °¡Á®¿À±â **/
+	/** ìƒˆë¡œ ì¶”ê°€í•œ ê²Œì‹œë¬¼ imageFileNoì„ ê°€ì ¸ì˜¤ê¸° **/
 	private int selectNewImageFileNO() throws DataAccessException {
 		return sqlSession.selectOne("mapper.board.selectNewImageFileNO");
 	}

@@ -7,9 +7,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 %>
+
 <head>
 <meta charset="UTF-8">
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="//code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 	function backToList(obj) {
 		obj.action = "${contextPath}/board/listArticles.do";
@@ -28,31 +29,39 @@
 </script>
 <title>답글쓰기 페이지</title>
 </head>
+
 <body>
-	<h1 style="text-align: center">답글쓰기</h1>
+	<h1>답글쓰기</h1>
 	<form name="frmReply" method="post"
 		action="${contextPath}/board/addReply.do"
 		enctype="multipart/form-data"
 	>
-		<table align="center">
+		<table>
 			<tr>
-				<td align="right">글쓴이:&nbsp;</td>
+				<td align="right">작성자:&nbsp;</td>
 				<td>
-					<input type="text" size="5" value="lee" disabled />
+					<input type="text" size="20" maxlength="100" name="writer"/>
 				</td>
 			</tr>
 			<tr>
-				<td align="right">글제목:&nbsp;</td>
+				<td align="right">제목:&nbsp;</td>
 				<td>
-					<input type="text" size="67" maxlength="100" name="title" />
+					<input type="text" size="67" maxlength="500" name="title"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right" valign="top">
-					<br>글내용:&nbsp;
+					<br>내용:&nbsp;
 				</td>
 				<td>
 					<textarea name="content" rows="10" cols="65" maxlength="4000"> </textarea>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">비밀번호:&nbsp;</td>
+				<td>
+					<input type="password" size="10" maxlength="12" name="passwd">
+					</input>
 				</td>
 			</tr>
 			<tr>
@@ -67,12 +76,14 @@
 			<tr>
 				<td align="right"></td>
 				<td>
-					<input type=submit value="답글반영하기" />
-					<input type=button value="취소" onClick="backToList(this.form)" />
+					<input type="submit" value="답글쓰기" />
+					<input type="button" value="취소" onClick="backToList(this.form)" />
 
 				</td>
 			</tr>
+
 		</table>
+
 	</form>
 </body>
 </html>

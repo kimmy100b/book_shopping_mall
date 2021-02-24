@@ -11,23 +11,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface BoardController {
 	
-	/** °Ô½Ã¹° ¸ñ·Ï Ç¥½ÃÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ëª©ë¡ í‘œì‹œí•˜ê¸° **/
 	public ModelAndView listArticles(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-	/** »õ ±Û Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ ì¶”ê°€í•˜ê¸° **/
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 
-	/** Æ¯Á¤ °Ô½Ã¹° º¸±â **/
+	/** íŠ¹ì • ê²Œì‹œë¬¼ ë³´ê¸° **/
 	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
-	/** °Ô½Ã¹° ¼öÁ¤ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ìˆ˜ì •í•˜ê¸° **/
 	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
 
-	/** °Ô½Ã¹° »èÁ¦ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ì‚­ì œí•˜ê¸° **/
 	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
+	
+	/** ë‹µê¸€ í˜ì´ì§€ë¡œ ì´ë™í•˜ê¸° **/
+	public ModelAndView replyForm(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
+	/** ë‹µê¸€ ì¶”ê°€í•˜ê¸° **/
+	public ResponseEntity addReply(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception;
 }

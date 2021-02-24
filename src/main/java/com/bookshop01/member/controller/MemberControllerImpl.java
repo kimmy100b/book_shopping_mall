@@ -43,14 +43,14 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 			session.setAttribute("memberInfo", memberVO);
 
 			String action = (String) session.getAttribute("action");
-			if (action != null && action.equals("/order/orderEachGoods.do")) { // ÁÖ¹® µµÁß¿¡ ·Î±×ÀÎÇÑ °æ¿ì
+			if (action != null && action.equals("/order/orderEachGoods.do")) { // ì£¼ë¬¸ ë„ì¤‘ì— ë¡œê·¸ì¸í•œ ê²½ìš°
 				mav.setViewName("forward:" + action);
 			} else {
 				mav.setViewName("redirect:/main/main.do");
 			}
 
 		} else {
-			String message = "¾ÆÀÌµğ³ª  ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù. ´Ù½Ã ·Î±×ÀÎÇØÁÖ¼¼¿ä";
+			String message = "ì•„ì´ë””ë‚˜  ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸í•´ì£¼ì„¸ìš”";
 			mav.addObject("message", message);
 			mav.setViewName("/member/loginForm");
 		}
@@ -81,13 +81,13 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		try {
 			memberService.addMember(_memberVO);
 			message = "<script>";
-			message += " alert('È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ·Î±×ÀÎÃ¢À¸·Î ÀÌµ¿ÇÕ´Ï´Ù.');";
+			message += " alert('íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ë¡œê·¸ì¸ì°½ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.');";
 			message += " location.href='" + request.getContextPath() + "/member/loginForm.do';";
 			message += " </script>";
 
 		} catch (Exception e) {
 			message = "<script>";
-			message += " alert('ÀÛ¾÷ Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä');";
+			message += " alert('ì‘ì—… ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”');";
 			message += " location.href='" + request.getContextPath() + "/member/memberForm.do';";
 			message += " </script>";
 			e.printStackTrace();

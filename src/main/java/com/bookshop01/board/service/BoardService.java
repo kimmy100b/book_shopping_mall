@@ -6,18 +6,18 @@ import java.util.Map;
 import com.bookshop01.board.vo.ArticleVO;
 
 public interface BoardService {
-	/** °Ô½Ã¹° ¸ñ·Ï Ç¥½ÃÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ëª©ë¡ í‘œì‹œí•˜ê¸° **/
 	public List<ArticleVO> listArticles() throws Exception;
 
-	/** »õ ±Û Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ ì¶”ê°€í•˜ê¸° & ë‹µê¸€ ì¶”ê°€í•˜ê¸° **/
 	public int addNewArticle(Map articleMap) throws Exception;
 
-	/** Æ¯Á¤ °Ô½Ã¹° º¸±â **/
+	/** íŠ¹ì • ê²Œì‹œë¬¼ ë³´ê¸° **/
 	public Map viewArticle(int articleNO) throws Exception;
 
-	/** °Ô½Ã¹° ¼öÁ¤ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ìˆ˜ì •í•˜ê¸° **/
 	public void modArticle(Map articleMap) throws Exception;
 
-	/** °Ô½Ã¹° »èÁ¦ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ì‚­ì œí•˜ê¸° **/
 	public void removeArticle(int articleNO) throws Exception;
 }

@@ -35,6 +35,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 	@Autowired
 	private AdminGoodsService adminGoodsService;
 
+	/** ê´€ë¦¬ì ìƒí’ˆ ì¡°íšŒí•˜ê¸° **/
 	@RequestMapping(value = "/adminGoodsMain.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView adminGoodsMain(@RequestParam Map<String, String> dateMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -42,7 +43,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		session.setAttribute("side_menu", "admin_mode"); // ¸¶ÀÌÆäÀÌÁö »çÀÌµå ¸Ş´º·Î ¼³Á¤ÇÑ´Ù.
+		session.setAttribute("side_menu", "admin_mode"); // ë§ˆì´í˜ì´ì§€ ì‚¬ì´ë“œ ë©”ë‰´ë¡œ ì„¤ì •
 
 		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
 		String section = dateMap.get("section");
@@ -84,7 +85,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 
 	}
 
-	/** »óÇ° µî·ÏÇÏ±â **/
+	/** ê´€ë¦¬ì ìƒí’ˆ ì¶”ê°€í•˜ê¸° **/
 	@RequestMapping(value = "/addNewGoods.do", method = { RequestMethod.POST })
 	public ResponseEntity addNewGoods(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception {
@@ -127,7 +128,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 				}
 			}
 			message = "<script>";
-			message += " alert('»õ»óÇ°À» Ãß°¡Çß½À´Ï´Ù.');";
+			message += " alert('ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/admin/goods/addNewGoodsForm.do';";
 			message += ("</script>");
 		} catch (Exception e) {
@@ -140,7 +141,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 			}
 
 			message = "<script>";
-			message += " alert('¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä');";
+			message += " alert('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½Ù½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/admin/goods/addNewGoodsForm.do';";
 			message += ("</script>");
 			e.printStackTrace();
@@ -149,6 +150,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return resEntity;
 	}
 
+	/** ê´€ë¦¬ì ìƒí’ˆ ìˆ˜ì •í•˜ëŠ” í¼ **/
 	@RequestMapping(value = "/modifyGoodsForm.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView modifyGoodsForm(@RequestParam("goods_id") int goods_id, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -161,6 +163,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return mav;
 	}
 
+	/** ê´€ë¦¬ì ìƒí’ˆ ìˆ˜ì •í•˜ê¸° **/
 	@RequestMapping(value = "/modifyGoodsInfo.do", method = { RequestMethod.POST })
 	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") String goods_id,
 			@RequestParam("attribute") String attribute, @RequestParam("value") String value,
@@ -179,7 +182,77 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		resEntity = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
 		return resEntity;
 	}
+	
+	/** ê´€ë¦¬ì ìƒí’ˆ ì‚­ì œí•˜ê¸° **/
+	@Override
+	@RequestMapping(value = "/removeGoodsImage.do", method = { RequestMethod.POST })
+	public void removeGoodsImage(@RequestParam("goods_id") int goods_id, @RequestParam("image_id") int image_id,
+			@RequestParam("imageFileName") String imageFileName, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
+		adminGoodsService.removeGoodsImage(image_id);
+		try {
+			File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id + "\\" + imageFileName);
+			srcFile.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/** ê´€ë¦¬ì ìƒí’ˆ ì´ë¯¸ì§€ ì¶”ê°€í•˜ê¸° **/
+	@Override
+	@RequestMapping(value = "/addNewGoodsImage.do", method = { RequestMethod.POST })
+	public void addNewGoodsImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception {
+		System.out.println("addNewGoodsImage");
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		String imageFileName = null;
+
+		Map goodsMap = new HashMap();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			goodsMap.put(name, value);
+		}
+
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+		String reg_id = memberVO.getMember_id();
+
+		List<ImageFileVO> imageFileList = null;
+		int goods_id = 0;
+		try {
+			imageFileList = upload(multipartRequest);
+			if (imageFileList != null && imageFileList.size() != 0) {
+				for (ImageFileVO imageFileVO : imageFileList) {
+					goods_id = Integer.parseInt((String) goodsMap.get("goods_id"));
+					imageFileVO.setGoods_id(goods_id);
+					imageFileVO.setReg_id(reg_id);
+				}
+
+				adminGoodsService.addNewGoodsImage(imageFileList);
+				for (ImageFileVO imageFileVO : imageFileList) {
+					imageFileName = imageFileVO.getFileName();
+					File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
+					File destDir = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id);
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				}
+			}
+		} catch (Exception e) {
+			if (imageFileList != null && imageFileList.size() != 0) {
+				for (ImageFileVO imageFileVO : imageFileList) {
+					imageFileName = imageFileVO.getFileName();
+					File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
+					srcFile.delete();
+				}
+			}
+			e.printStackTrace();
+		}
+	}
+
+	/** ê´€ë¦¬ì ìƒí’ˆ ì´ë¯¸ì§€ ìˆ˜ì •í•˜ê¸° **/
 	@RequestMapping(value = "/modifyGoodsImageInfo.do", method = { RequestMethod.POST })
 	public void modifyGoodsImageInfo(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception {
@@ -234,72 +307,4 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		}
 
 	}
-
-	@Override
-	@RequestMapping(value = "/addNewGoodsImage.do", method = { RequestMethod.POST })
-	public void addNewGoodsImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-			throws Exception {
-		System.out.println("addNewGoodsImage");
-		multipartRequest.setCharacterEncoding("utf-8");
-		response.setContentType("text/html; charset=utf-8");
-		String imageFileName = null;
-
-		Map goodsMap = new HashMap();
-		Enumeration enu = multipartRequest.getParameterNames();
-		while (enu.hasMoreElements()) {
-			String name = (String) enu.nextElement();
-			String value = multipartRequest.getParameter(name);
-			goodsMap.put(name, value);
-		}
-
-		HttpSession session = multipartRequest.getSession();
-		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-		String reg_id = memberVO.getMember_id();
-
-		List<ImageFileVO> imageFileList = null;
-		int goods_id = 0;
-		try {
-			imageFileList = upload(multipartRequest);
-			if (imageFileList != null && imageFileList.size() != 0) {
-				for (ImageFileVO imageFileVO : imageFileList) {
-					goods_id = Integer.parseInt((String) goodsMap.get("goods_id"));
-					imageFileVO.setGoods_id(goods_id);
-					imageFileVO.setReg_id(reg_id);
-				}
-
-				adminGoodsService.addNewGoodsImage(imageFileList);
-				for (ImageFileVO imageFileVO : imageFileList) {
-					imageFileName = imageFileVO.getFileName();
-					File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
-					File destDir = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id);
-					FileUtils.moveFileToDirectory(srcFile, destDir, true);
-				}
-			}
-		} catch (Exception e) {
-			if (imageFileList != null && imageFileList.size() != 0) {
-				for (ImageFileVO imageFileVO : imageFileList) {
-					imageFileName = imageFileVO.getFileName();
-					File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + "temp" + "\\" + imageFileName);
-					srcFile.delete();
-				}
-			}
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	@RequestMapping(value = "/removeGoodsImage.do", method = { RequestMethod.POST })
-	public void removeGoodsImage(@RequestParam("goods_id") int goods_id, @RequestParam("image_id") int image_id,
-			@RequestParam("imageFileName") String imageFileName, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-
-		adminGoodsService.removeGoodsImage(image_id);
-		try {
-			File srcFile = new File(CURR_IMAGE_REPO_PATH + "\\" + goods_id + "\\" + imageFileName);
-			srcFile.delete();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }

@@ -8,24 +8,24 @@ import org.springframework.dao.DataAccessException;
 import com.bookshop01.board.vo.ArticleVO;
 
 public interface BoardDAO {
-	/** °Ô½Ã¹° ¸ñ·Ï list·Î °¡Á®¿À±â **/
+	/** ê²Œì‹œë¬¼ ëª©ë¡ listë¡œ ê°€ì ¸ì˜¤ê¸° **/
 	public List selectAllArticlesList() throws DataAccessException;
 
-	/** »õ ±ÛÀÇ µ¥ÀÌÅÍ Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ì˜ ë°ì´í„° ì¶”ê°€í•˜ê¸° **/
 	public int insertNewArticle(Map articleMap) throws DataAccessException;
 
-	/** »õ ±ÛÀÇ Ã·ºÎÆÄÀÏ µ¥ÀÌÅÍ Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ì˜ ì²¨ë¶€íŒŒì¼ ë°ì´í„° ì¶”ê°€í•˜ê¸° **/
 	public void insertNewImage(Map articleMap) throws DataAccessException;
 
-	/** ÇØ´ç °Ô½Ã¹°ÀÇ µ¥ÀÌÅÍ °¡Á®¿À±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ì˜ ë°ì´í„° ê°€ì ¸ì˜¤ê¸° **/
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException;
 
-	/** ÇØ´ç °Ô½Ã¹° ¼öÁ¤ÇÏ±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ ìˆ˜ì •í•˜ê¸° **/
 	public void updateArticle(Map articleMap) throws DataAccessException;
 
-	/** ÇØ´ç °Ô½Ã¹° »èÁ¦ÇÏ±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ ì‚­ì œí•˜ê¸° **/
 	public void deleteArticle(int articleNO) throws DataAccessException;
 
-	/** ÇØ´ç °Ô½Ã¹°ÀÇ Ã·ºÎÆÄÀÏ °¡Á®¿À±â **/
+	/** í•´ë‹¹ ê²Œì‹œë¬¼ì˜ ì²¨ë¶€íŒŒì¼ ê°€ì ¸ì˜¤ê¸° **/
 	public List selectImageFileList(int articleNO) throws DataAccessException;
 }

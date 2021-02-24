@@ -1,5 +1,6 @@
 package com.bookshop01.board.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,22 +20,25 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardDAO boardDAO;
 
-	/** °Ô½Ã¹° ¸ñ·Ï Ç¥½ÃÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ëª©ë¡ í‘œì‹œí•˜ê¸° **/
 	public List<ArticleVO> listArticles() throws Exception {
 		List<ArticleVO> articlesList = boardDAO.selectAllArticlesList();
 		return articlesList;
 	}
 
-	/** »õ ±Û Ãß°¡ÇÏ±â **/
+	/** ìƒˆ ê¸€ ì¶”ê°€í•˜ê¸° & ë‹µê¸€ ì¶”ê°€í•˜ê¸° **/
 	@Override
 	public int addNewArticle(Map articleMap) throws Exception {
 		int articleNO = boardDAO.insertNewArticle(articleMap);
 		articleMap.put("articleNO", articleNO);
-		boardDAO.insertNewImage(articleMap);
+		List<ImageVO> imageFileList = (ArrayList) articleMap.get("imageFileList");
+		if (imageFileList != null && imageFileList.size() != 0) { 
+			boardDAO.insertNewImage(articleMap);
+		}
 		return articleNO;
 	}
 
-	/** Æ¯Á¤ °Ô½Ã¹° º¸±â **/
+	/** íŠ¹ì • ê²Œì‹œë¬¼ ë³´ê¸° **/
 	@Override
 	public Map viewArticle(int articleNO) throws Exception {
 		Map articleMap = new HashMap();
@@ -45,13 +49,16 @@ public class BoardServiceImpl implements BoardService {
 		return articleMap;
 	}
 
-	/** °Ô½Ã¹° ¼öÁ¤ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ìˆ˜ì •í•˜ê¸° **/
 	@Override
 	public void modArticle(Map articleMap) throws Exception {
-		boardDAO.updateArticle(articleMap);
+		/*
+		int articleNO = boardDAO.updateArticle(articleMap);
+		return articleNO;
+		*/
 	}
 
-	/** °Ô½Ã¹° »èÁ¦ÇÏ±â **/
+	/** ê²Œì‹œë¬¼ ì‚­ì œí•˜ê¸° **/
 	@Override
 	public void removeArticle(int articleNO) throws Exception {
 		boardDAO.deleteArticle(articleNO);
