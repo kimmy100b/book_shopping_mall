@@ -25,6 +25,13 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
+	
+	var cnt = 1;
+	function fn_addFile() {
+		$("#d_file")
+				.append("<br>" + "<input type='file' name='file"+cnt+"' />");
+		cnt++;
+	}
 </script>
 <title>답글쓰기 페이지</title>
 </head>
@@ -38,7 +45,9 @@
 			<tr>
 				<td align="right">글쓴이:&nbsp;</td>
 				<td>
-					<input type="text" size="5" value="lee" disabled />
+					<input type="text" size="5" value="${memberInfo.member_id }"
+						disabled
+					/>
 				</td>
 			</tr>
 			<tr>
@@ -56,17 +65,20 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="right">이미지파일 첨부:</td>
-				<td>
-					<input type="file" name="imageFileName" onchange="readURL(this);" />
+				<td align="right">이미지파일 첨부</td>
+				<td align="left">
+					<input type="button" value="파일 추가" onClick="fn_addFile()" />
 				</td>
-				<td>
-					<img id="preview" src="#" width=200 height=200 />
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div id="d_file"></div>
 				</td>
 			</tr>
 			<tr>
 				<td align="right"></td>
 				<td>
+					<input type="hidden" name="parentNO" value="${param.parentNO}" />
 					<input type=submit value="답글반영하기" />
 					<input type=button value="취소" onClick="backToList(this.form)" />
 

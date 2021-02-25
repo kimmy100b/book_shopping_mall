@@ -61,7 +61,7 @@
 	 
 	 function fn_reply_form(url, parentNO){
 		 var form = document.createElement("form");
-		 form.setAttribute("method", "post");
+		 form.setAttribute("method", "get");
 		 form.setAttribute("action", url);
 	     var parentNOInput = document.createElement("input");
 	     parentNOInput.setAttribute("type","hidden");
@@ -119,7 +119,7 @@
 				</td>
 			</tr>
 
-			<c:if test="${not empty imageFileList && imageFileList!='null' }">
+			<c:if test="${not empty imageFileList && null ne imageFileList }">
 				<c:forEach var="item" items="${imageFileList}" varStatus="status">
 					<tr>
 						<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
@@ -128,6 +128,7 @@
 							<input type="hidden" name="originalFileName"
 								value="${item.imageFileName }"
 							/>
+							${item.imageFileName }
 							<img
 								src="${contextPath}/download.do?articleNO=${article.articleNO}&imageFileName=${item.imageFileName}"
 								id="preview"

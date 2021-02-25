@@ -31,7 +31,7 @@ public interface BoardController {
 			HttpServletResponse response) throws Exception;
 	
 	/** 답글 페이지로 이동하기 **/
-	public ModelAndView replyForm(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public ModelAndView replyForm(@RequestParam("parentNO") int parentNO, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 	/** 답글 추가하기 **/
 	public ResponseEntity addReply(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)

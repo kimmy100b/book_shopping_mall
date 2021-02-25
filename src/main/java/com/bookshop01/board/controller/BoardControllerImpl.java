@@ -242,12 +242,9 @@ public class BoardControllerImpl implements BoardController {
 
 	/** 답글 페이지로 이동하기 **/
 	@Override
-	@RequestMapping(value = "/board/replyForm.do", method = RequestMethod.POST)
-	public ModelAndView replyForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int parentNO = Integer.parseInt(request.getParameter("parentNO"));
-		HttpSession session = request.getSession(); // 답글에 대한 부모 글 번호를 저장하기 위해 세션을 사용
-		session.setAttribute("parentNO", parentNO);
-		
+	@RequestMapping(value = "/board/replyForm.do", method = RequestMethod.GET)
+	public ModelAndView replyForm(@RequestParam("parentNO") int parentNO, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {		
 		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
@@ -266,10 +263,16 @@ public class BoardControllerImpl implements BoardController {
 
 		Map articleMap = new HashMap();
 		Enumeration enu = multipartRequest.getParameterNames();
+		
 		while (enu.hasMoreElements()) {
 			String name = (String) enu.nextElement();
 			String value = multipartRequest.getParameter(name);
-			articleMap.put(name, value);
+			if(name.equals("parentNO")) {
+				int intValue = Integer.parseInt(value);
+				articleMap.put(name, intValue);
+			} else {
+				articleMap.put(name, value);
+			}
 		}
 
 		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
@@ -277,14 +280,8 @@ public class BoardControllerImpl implements BoardController {
 		System.out.println(session.getAttribute("memberInfo"));
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		System.out.println(memberVO);
-		String id = memberVO.getMember_id();
-		System.out.println("s:"+session.getAttribute("parentNO"));
-		String _parentNO = (String) session.getAttribute("parentNO");
-		int parentNO = Integer.parseInt(_parentNO);
-		System.out.println(parentNO);
-		
+		String id = memberVO.getMember_id();		
 		articleMap.put("id", id);
-		articleMap.put("parentNO", parentNO);
 
 		List<String> fileList = upload(multipartRequest);
 		List<ImageVO> imageFileList = new ArrayList<ImageVO>();
@@ -327,7 +324,7 @@ public class BoardControllerImpl implements BoardController {
 
 			message = " <script>";
 			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
-			message += " location.href='" + multipartRequest.getContextPath() + "/board/articleForm.do'; ";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/replyForm.do'; ";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			e.printStackTrace();

@@ -9,32 +9,32 @@ import org.springframework.stereotype.Component;
 
 @Component("articleVO")
 public class ArticleVO {
-	/** °Ô½Ã¹° ¹øÈ£ **/
+	/** ê²Œì‹œë¬¼ ë²ˆí˜¸ **/
 	private int articleNO;
 	
-	/** ºÎ¸ğ °Ô½Ã¹° ¹øÈ£ **/
+	/** ë¶€ëª¨ ê²Œì‹œë¬¼ ë²ˆí˜¸ **/
 	private int parentNO;
 	
-	/** °Ô½ÃÆÇ level - ´äº¯Çü °Ô½ÃÆÇÀ» À§ÇØ **/
+	/** ê²Œì‹œíŒ level - ë‹µë³€í˜• ê²Œì‹œíŒì„ ìœ„í•´ **/
 	private int level;
 	
-	/** °Ô½Ã¹° Á¦¸ñ **/
+	/** ê²Œì‹œë¬¼ ì œëª© **/
 	private String title;
 	
-	/** °Ô½Ã¹° ³»¿ë **/
+	/** ê²Œì‹œë¬¼ ë‚´ìš© **/
 	private String content;
 	
-	/** °Ô½Ã¹° Ã·ºÎÆÄÀÏ ÀÌ¸§ **/
+	/** ê²Œì‹œë¬¼ ì²¨ë¶€íŒŒì¼ ì´ë¦„ **/
 	private String imageFileName;
 	
-	/** °Ô½Ã¹° ÀÛ¼ºÀÚ(È¸¿øID) **/
+	/** ê²Œì‹œë¬¼ ì‘ì„±ì(íšŒì›ID) **/
 	private String id;
 	
-	/** °Ô½Ã¹° µî·ÏÀÏÀÚ **/
+	/** ê²Œì‹œë¬¼ ë“±ë¡ì¼ì **/
 	private Date writeDate;
 
 	public ArticleVO() {
-		System.out.println("ArticleVO »ı¼ºÀÚ");
+		System.out.println("ArticleVO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 	}
 
 	public int getArticleNO() {
@@ -113,5 +113,4 @@ public class ArticleVO {
 	public void setWriteDate(Date writeDate) {
 		this.writeDate = writeDate;
 	}
-
 }

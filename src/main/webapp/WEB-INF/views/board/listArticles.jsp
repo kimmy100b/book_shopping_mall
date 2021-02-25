@@ -25,7 +25,6 @@
 </head>
 <script>
 	function fn_articleForm(isLogOn, articleForm, loginForm) {
-		alert(isLogOn);
 		if (isLogOn != '' && isLogOn != 'false') {
 			location.href = articleForm;
 		} else {

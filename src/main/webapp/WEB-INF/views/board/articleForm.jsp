@@ -22,6 +22,7 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
+	
 	function backToList(obj) {
 		obj.action = "${contextPath}/board/listArticles.do";
 		obj.submit();
