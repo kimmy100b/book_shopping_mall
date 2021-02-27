@@ -101,6 +101,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 			newGoodsMap.put(name, value);
 		}
 
+		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
 		HttpSession session = multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		String reg_id = memberVO.getMember_id();
@@ -128,7 +129,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 				}
 			}
 			message = "<script>";
-			message += " alert('����ǰ�� �߰��߽��ϴ�.');";
+			message += " alert('새 상품을 추가했습니다.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/admin/goods/addNewGoodsForm.do';";
 			message += ("</script>");
 		} catch (Exception e) {
@@ -141,7 +142,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 			}
 
 			message = "<script>";
-			message += " alert('������ �߻��߽��ϴ�. �ٽ� �õ��� �ּ���');";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/admin/goods/addNewGoodsForm.do';";
 			message += ("</script>");
 			e.printStackTrace();

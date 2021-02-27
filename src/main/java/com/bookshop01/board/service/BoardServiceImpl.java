@@ -20,12 +20,27 @@ import com.bookshop01.board.vo.ImageVO;
 public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardDAO boardDAO;
+	
+	/** 페이징 게시물 목록 표시하기 **/
+	@Override
+	public Map listArticles(Map pagingMap) throws Exception {
+		Map articlesMap = new HashMap();
+		List<ArticleVO> articlesList = boardDAO.selectAllArticlesList(pagingMap);
+		int totArticles = boardDAO.selectTotArticles();
+		articlesMap.put("articlesList",articlesList);
+		articlesMap.put("totArticles",totArticles);
+		return articlesMap;
+	}
 
+	
 	/** 게시물 목록 표시하기 **/
+	/*
+	@Override
 	public List<ArticleVO> listArticles() throws Exception {
 		List<ArticleVO> articlesList = boardDAO.selectAllArticlesList();
 		return articlesList;
 	}
+	*/
 
 	/** 새 글 추가하기 & 답글 추가하기 **/
 	@Override

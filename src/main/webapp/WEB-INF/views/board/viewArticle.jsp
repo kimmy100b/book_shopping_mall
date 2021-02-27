@@ -59,18 +59,24 @@
 	     form.submit();
 	 }
 	 
-	 function fn_reply_form(url, parentNO){
-		 var form = document.createElement("form");
-		 form.setAttribute("method", "get");
-		 form.setAttribute("action", url);
-	     var parentNOInput = document.createElement("input");
-	     parentNOInput.setAttribute("type","hidden");
-	     parentNOInput.setAttribute("name","parentNO");
-	     parentNOInput.setAttribute("value", parentNO);
-		 
-	     form.appendChild(parentNOInput);
-	     document.body.appendChild(form);
-		 form.submit();
+	 function fn_reply_form(isLogOn, url, parentNO){
+		 if (isLogOn != '' && isLogOn != 'false') {
+			 var form = document.createElement("form");
+			 form.setAttribute("method", "get");
+			 form.setAttribute("action", url);
+			 
+		     var parentNOInput = document.createElement("input");
+		     parentNOInput.setAttribute("type","hidden");
+		     parentNOInput.setAttribute("name","parentNO");
+		     parentNOInput.setAttribute("value", parentNO);
+			 
+		     form.appendChild(parentNOInput);
+		     document.body.appendChild(form);
+			 form.submit();
+		 } else {
+			alert("로그인 후 글쓰기가 가능합니다.")
+			location.href = loginForm + '?action=/board/articleForm.do';
+		 } 		 
 	 }
 	 
 	 function readURL(input) {
@@ -105,9 +111,18 @@
 			<tr>
 				<td width="150" align="center" bgcolor="#FF9933">제목</td>
 				<td>
-					<input type=text value="${article.title }" name="title"
-						id="i_title" disabled
-					/>
+					<c:choose>
+						<c:when test="${article.parentNO } ne '0'">
+							<input type=text value="[답글]${article.title }" name="title"
+								id="i_title" disabled
+							/>
+						</c:when>
+						<c:otherwise>
+							<input type=text value="${article.title }" name="title"
+								id="i_title" disabled
+							/>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			<tr>
@@ -128,9 +143,8 @@
 							<input type="hidden" name="originalFileName"
 								value="${item.imageFileName }"
 							/>
-							${item.imageFileName }
 							<img
-								src="${contextPath}/download.do?articleNO=${article.articleNO}&imageFileName=${item.imageFileName}"
+								src="${contextPath}/downloadFile.do?articleNO=${article.articleNO}&imageFileName=${item.imageFileName}"
 								id="preview"
 							/><br>
 						</td>
@@ -163,9 +177,9 @@
 
 			<tr id="tr_btn">
 				<td colspan="2" align="center">
-					<c:if test="${member.id == article.id }">
-						<input type=button value="수정하기" onClick="fn_enable(this.form)">
-						<input type=button value="삭제하기"
+					<c:if test="${memberInfo.member_id == article.id }">
+						<input type="button" value="수정하기" onClick="fn_enable(this.form)">
+						<input type="button" value="삭제하기"
 							onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${article.articleNO})"
 						>
 					</c:if>
@@ -173,7 +187,7 @@
 						onClick="backToList(this.form)"
 					>
 					<input type=button value="답글쓰기"
-						onClick="fn_reply_form('${contextPath}/board/replyForm.do', ${article.articleNO})"
+						onClick="fn_reply_form('${isLogOn}','${contextPath}/board/replyForm.do', ${article.articleNO})"
 					>
 				</td>
 			</tr>

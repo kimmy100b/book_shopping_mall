@@ -73,7 +73,7 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 
 	private void addGoodsInQuick(String goods_id, GoodsVO goodsVO, HttpSession session) {
 		boolean already_existed = false;
-		List<GoodsVO> quickGoodsList; // ÃÖ±Ù º» »óÇ° ÀúÀå ArrayList
+		List<GoodsVO> quickGoodsList; // ìµœê·¼ ë³¸ ë„ì„œëª…ì„ ArrayListë¡œ ì €ì¥
 		quickGoodsList = (ArrayList<GoodsVO>) session.getAttribute("quickGoodsList");
 
 		if (quickGoodsList != null) {

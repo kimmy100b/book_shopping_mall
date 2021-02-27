@@ -19,8 +19,12 @@ public class BoardDAOImpl implements BoardDAO {
 
 	/** 게시물 목록 list로 가져오기 **/
 	@Override
-	public List selectAllArticlesList() throws DataAccessException {
-		List<ArticleVO> articlesList = articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList");
+	public List selectAllArticlesList(Map<String, Integer> pagingMap) throws DataAccessException {
+		List<ArticleVO> articlesList = new ArrayList<ArticleVO>();
+		int section = (Integer) pagingMap.get("section");
+		int pageNum = (Integer) pagingMap.get("pageNum");
+		
+		articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList", pagingMap);
 		return articlesList;
 	}
 
@@ -71,6 +75,12 @@ public class BoardDAOImpl implements BoardDAO {
 		List<ImageVO> imageFileList = null;
 		imageFileList = sqlSession.selectList("mapper.board.selectImageFileList", articleNO);
 		return imageFileList;
+	}
+	
+	/** 전체 글 수를 조회하기 **/
+	@Override
+	public int selectTotArticles() throws DataAccessException {
+		return sqlSession.selectOne("mapper.board.selectTotArticles");
 	}
 
 	/** 새로 추가한 게시물 articleNO을 가져오기 **/

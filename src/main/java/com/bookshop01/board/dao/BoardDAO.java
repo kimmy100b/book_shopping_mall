@@ -9,7 +9,7 @@ import com.bookshop01.board.vo.ArticleVO;
 
 public interface BoardDAO {
 	/** 게시물 목록 list로 가져오기 **/
-	public List selectAllArticlesList() throws DataAccessException;
+	public List selectAllArticlesList(Map<String, Integer> pagingMap) throws DataAccessException;
 
 	/** 새 글의 데이터 추가하기 **/
 	public int insertNewArticle(Map articleMap) throws DataAccessException;
@@ -28,4 +28,7 @@ public interface BoardDAO {
 
 	/** 해당 게시물의 첨부파일 가져오기 **/
 	public List selectImageFileList(int articleNO) throws DataAccessException;
+	
+	/** 전체 글 수를 조회하기 **/
+	public int selectTotArticles() throws DataAccessException;
 }

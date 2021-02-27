@@ -51,11 +51,30 @@
 		resultMap="articlesResult"
 	>
     <![CDATA[
-      SELECT level, articleNO, parentNO, title, content, writeDate, imageFileName, id
-      from t_board
-      START WITH  parentNO=0
-      CONNECT BY PRIOR articleNO=parentNO 
-      ORDER SIBLINGS BY articleNO DESC		
+      SELECT * FROM ( 
+      		SELECT ROWNUM as recNum, 
+      				LVL, 
+      				articleNO, 
+      				parentNO, 
+      				title, 
+      				content, 
+      				writeDate, 
+      				imageFileName, 
+      				id
+      				FROM (
+      					SELECT level as LVL,
+      							articleNO,
+      							parentNO,
+      							title,
+      							content,
+      							writeDate,
+     							imageFileName,
+      							id      							
+      					FROM t_board
+      					START WITH  parentNO=0
+      					CONNECT BY PRIOR articleNO=parentNO 
+      					ORDER SIBLINGS BY articleNO DESC ))
+      WHERE recNum BETWEEN(#{section}-1)*100+(#{pageNum}-1)*10+1 AND (#{section}-1)*100+#{pageNum}*10					    				
     ]]>
 	</select>
 
@@ -132,7 +151,18 @@
 			values(#{item.imageFileNO}, #{item.imageFileName}, #{item.articleNO}, sysdate)
 		</foreach>
 	</insert>
+	
+	<!-- 게시물 전체 글 수 조회하기 -->
+	<select
+		id="selectTotArticles"
+		resultType="int"
+	>
+    <![CDATA[
+      SELECT count(articleNO) FROM t_board		
+    ]]>
+	</select>
 
+	<!-- 첨부파일 NO 가져오기 -->
 	<select
 		id="selectNewImageFileNO"
 		resultType="int"

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8" isELIgnored="false"%>
+	pageEncoding="utf-8" isELIgnored="false"
+%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -9,7 +10,7 @@
 <c:set var="imageList" value="${goodsMap.imageList }" />
 <%
 	pageContext.setAttribute("crcn", "\n"); //Ajax로 변경 시 개행 문자 
-	pageContext.setAttribute("br", "<br/>"); //br 태그
+pageContext.setAttribute("br", "<br/>"); //br 태그
 %>
 <html>
 <head>
@@ -142,7 +143,8 @@
 	<div id="goods_image">
 		<figure>
 			<img alt="HTML5 &amp; CSS3"
-				src="${contextPath}/thumbnails.do?goods_id=${goods.goods_id}&fileName=${goods.goods_fileName}">
+				src="${contextPath}/thumbnails.do?goods_id=${goods.goods_id}&fileName=${goods.goods_fileName}"
+			>
 		</figure>
 	</div>
 	<div id="detail_table">
@@ -150,17 +152,21 @@
 			<tbody>
 				<tr>
 					<td class="fixed">정가</td>
-					<td class="active"><span> <fmt:formatNumber
-								value="${goods.goods_price}" type="number" var="goods_price" />
-							${goods_price}원
-					</span></td>
+					<td class="active">
+						<span> <fmt:formatNumber value="${goods.goods_price}"
+								type="number" var="goods_price"
+							/> ${goods_price}원
+						</span>
+					</td>
 				</tr>
 				<tr class="dot_line">
 					<td class="fixed">판매가</td>
-					<td class="active"><span> <fmt:formatNumber
-								value="${goods.goods_price*0.9}" type="number"
-								var="discounted_price" /> ${discounted_price}원(10%할인)
-					</span></td>
+					<td class="active">
+						<span> <fmt:formatNumber value="${goods.goods_price*0.9}"
+								type="number" var="discounted_price"
+							/> ${discounted_price}원(10%할인)
+						</span>
+					</td>
 				</tr>
 				<tr>
 					<td class="fixed">포인트적립</td>
@@ -173,9 +179,10 @@
 				</tr>
 				<tr>
 					<td class="fixed">발행일</td>
-					<td class="fixed"><c:set var="pub_date"
-							value="${goods.goods_published_date}" /> <c:set var="arr"
-							value="${fn:split(pub_date,' ')}" /> <c:out value="${arr[0]}" />
+					<td class="fixed">
+						<c:set var="pub_date" value="${goods.goods_published_date}" />
+						<c:set var="arr" value="${fn:split(pub_date,' ')}" />
+						<c:out value="${arr[0]}" />
 					</td>
 				</tr>
 				<tr>
@@ -188,12 +195,16 @@
 				</tr>
 				<tr>
 					<td class="fixed">배송료</td>
-					<td class="fixed"><strong>무료</strong></td>
+					<td class="fixed">
+						<strong>무료</strong>
+					</td>
 				</tr>
 				<tr>
 					<td class="fixed">배송안내</td>
-					<td class="fixed"><strong>[당일배송]</strong> 당일배송 서비스 시작!<br>
-						<strong>[휴일배송]</strong> 휴일에도 배송받는 Bookshop</TD>
+					<td class="fixed">
+						<strong>[당일배송]</strong> 당일배송 서비스 시작!<br> <strong>[휴일배송]</strong>
+						휴일에도 배송받는 Bookshop
+					</TD>
 				</tr>
 				<tr>
 					<td class="fixed">도착예정일</td>
@@ -201,23 +212,25 @@
 				</tr>
 				<tr>
 					<td class="fixed">수량</td>
-					<td class="fixed"><select style="width: 60px;"
-						id="order_goods_qty">
+					<td class="fixed">
+						<select style="width: 60px;" id="order_goods_qty">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
 							<option>5</option>
-					</select></td>
+						</select>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<ul>
 			<li><a class="buy"
-				href="javascript:fn_order_each_goods('${goods.goods_id }','${goods.goods_title }','${goods.goods_sales_price}','${goods.goods_fileName}');">구매하기
-			</a></li>
+				href="javascript:fn_order_each_goods('${goods.goods_id }','${goods.goods_title }','${goods.goods_sales_price}','${goods.goods_fileName}');"
+			>구매하기 </a></li>
 			<li><a class="cart"
-				href="javascript:add_cart('${goods.goods_id }')">장바구니</a></li>
+				href="javascript:add_cart('${goods.goods_id }')"
+			>장바구니</a></li>
 			<li><a class="wish" href="#">위시리스트</a></li>
 		</ul>
 	</div>
@@ -238,7 +251,8 @@
 				<p>${goods.goods_intro}</p>
 				<c:forEach var="image" items="${imageList }">
 					<img
-						src="${contextPath}/download.do?goods_id=${goods.goods_id}&fileName=${image.fileName}">
+						src="${contextPath}/download.do?goods_id=${goods.goods_id}&fileName=${image.fileName}"
+					>
 				</c:forEach>
 			</div>
 			<div class="tab_content" id="tab2">
@@ -270,8 +284,8 @@
 		<div id="popup">
 			<!-- 팝업창 닫기 버튼 -->
 			<a href="javascript:"
-				onClick="javascript:imagePopup('close', '.layer01');"> <img
-				src="${contextPath}/resources/image/close.png" id="close" />
+				onClick="javascript:imagePopup('close', '.layer01');"
+			> <img src="${contextPath}/resources/image/close.png" id="close" />
 			</a> <br /> <font size="12" id="contents">장바구니에 담았습니다.</font><br>
 			<form action='${contextPath}/cart/myCartList.do'>
 				<input type="submit" value="장바구니 보기">

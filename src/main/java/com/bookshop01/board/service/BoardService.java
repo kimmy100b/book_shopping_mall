@@ -6,8 +6,11 @@ import java.util.Map;
 import com.bookshop01.board.vo.ArticleVO;
 
 public interface BoardService {
+	/** 페이징 게시물 목록 표시하기 **/
+	public Map listArticles(Map pagingMap) throws Exception;
+	
 	/** 게시물 목록 표시하기 **/
-	public List<ArticleVO> listArticles() throws Exception;
+	//public List<ArticleVO> listArticles() throws Exception;
 
 	/** 새 글 추가하기 & 답글 추가하기 **/
 	public int addNewArticle(Map articleMap) throws Exception;

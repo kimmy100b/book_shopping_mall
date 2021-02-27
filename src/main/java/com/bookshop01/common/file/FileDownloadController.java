@@ -19,6 +19,7 @@ import net.coobird.thumbnailator.Thumbnails;
 public class FileDownloadController {
 	private static String CURR_IMAGE_REPO_PATH = "D:\\workspace\\jsp servlet\\shopping\\file_repo";
 	
+	/** ë‹¤ìš´ë¡œë“œ **/
 	@RequestMapping("/download")
 	protected void download(@RequestParam("fileName") String fileName,
 		                 	@RequestParam("goods_id") String goods_id,
@@ -32,15 +33,14 @@ public class FileDownloadController {
 		FileInputStream in=new FileInputStream(image); 
 		byte[] buffer=new byte[1024*8];
 		while(true){
-			int count=in.read(buffer); //¹öÆÛ¿¡ ÀĞ¾îµéÀÎ ¹®ÀÚ°³¼ö
-			if(count==-1)  //¹öÆÛÀÇ ¸¶Áö¸·¿¡ µµ´ŞÇß´ÂÁö Ã¼Å©
+			int count=in.read(buffer); //ë²„í¼ì— ì½ì–´ë“¤ì¸ ë¬¸ìê°œìˆ˜
+			if(count==-1)  //ë²„í¼ì˜ ë§ˆì§€ë§‰ì— ë„ë‹¬í–ˆëŠ”ì§€ ì²´í¬
 				break;
 			out.write(buffer,0,count);
 		}
 		in.close();
 		out.close();
 	}
-	
 	
 	@RequestMapping("/thumbnails.do")
 	protected void thumbnails(@RequestParam("fileName") String fileName,

@@ -30,6 +30,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 	@Autowired
 	private MemberVO memberVO;
 
+	/** 로그인 기능 구현 **/
 	@Override
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public ModelAndView login(@RequestParam Map<String, String> loginMap, HttpServletRequest request,
@@ -38,7 +39,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		memberVO = memberService.login(loginMap);
 		if (memberVO != null && memberVO.getMember_id() != null) {
 			HttpSession session = request.getSession();
-			session = request.getSession();
+			// session = request.getSession();
 			session.setAttribute("isLogOn", true);
 			session.setAttribute("memberInfo", memberVO);
 
@@ -57,17 +58,20 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		return mav;
 	}
 
+	/** 로그아웃 기능 구현 **/
 	@Override
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
+		session.removeAttribute("isLogOn");
 		session.setAttribute("isLogOn", false);
 		session.removeAttribute("memberInfo");
 		mav.setViewName("redirect:/main/main.do");
 		return mav;
 	}
 
+	/** 회원가입 기능 구현 **/
 	@Override
 	@RequestMapping(value = "/addMember.do", method = RequestMethod.POST)
 	public ResponseEntity addMember(@ModelAttribute("memberVO") MemberVO _memberVO, HttpServletRequest request,
@@ -96,6 +100,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		return resEntity;
 	}
 
+	/** 아이디 중복인지 확인하는 기능 구현 **/
 	@Override
 	@RequestMapping(value = "/overlapped.do", method = RequestMethod.POST)
 	public ResponseEntity overlapped(@RequestParam("id") String id, HttpServletRequest request,
