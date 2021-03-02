@@ -24,8 +24,8 @@ public interface BoardController {
 			HttpServletResponse response) throws Exception;
 
 	/** 게시물 수정하기 **/
-	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-			throws Exception;
+	public ResponseEntity modArticle(@RequestParam("articleNO") int articleNO, 
+			MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception;
 
 	/** 게시물 삭제하기 **/
 	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,

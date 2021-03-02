@@ -61,6 +61,12 @@ public class BoardDAOImpl implements BoardDAO {
 	public void updateArticle(Map articleMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateArticle", articleMap);
 	}
+	
+	/** 해당 게시물 첨부파일 삭제하기 **/
+	@Override
+	public void deleteImage(int[] delFileNO) throws DataAccessException {
+		sqlSession.delete("mapper.board.deleteImage", delFileNO);
+	}
 
 	/** 해당 게시물 삭제하기 **/
 	@Override

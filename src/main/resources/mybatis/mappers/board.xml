@@ -46,6 +46,7 @@
 			column="imageFileName" />
 	</resultMap>
 
+	<!-- 목록 게시판(페이징 기능 구현) -->
 	<select
 		id="selectAllArticlesList"
 		resultMap="articlesResult"
@@ -78,6 +79,7 @@
     ]]>
 	</select>
 
+	<!-- 게시물 articleNO 구하기 -->
 	<select
 		id="selectNewArticleNO"
 		resultType="int"
@@ -87,6 +89,7 @@
 		]]>
 	</select>
 
+	<!-- 게시물 정보 select -->
 	<select
 		id="selectArticle"
 		resultType="articleVO"
@@ -98,6 +101,7 @@
     ]]>
 	</select>
 
+	<!-- 게시물 수정 -->
 	<update
 		id="updateArticle"
 		parameterType="java.util.Map"
@@ -105,12 +109,26 @@
 		update t_board
 		set title=#{title},
 		content=#{content}
-		<if test="imageFileName!='' and imageFileName!=null">
-			, imageFileName=#{imageFileName}
-		</if>
 		where articleNO=#{articleNO}
 	</update>
 
+	<!-- 게시물 일부 첨부파일 삭제 -->
+	<delete
+		id="deleteImage"
+		parameterType="java.util.Map"
+	>
+		DELETE FROM t_imageFile
+		WHERE
+		<foreach
+			item="item"
+			collection="array"
+			separator="OR"
+		>
+			imageFileNO = #{item}
+		</foreach>
+	</delete>
+
+	<!-- 게시물 삭제 : 관련 자식글까지 삭제 -->
 	<delete
 		id="deleteArticle"
 		parameterType="int"
@@ -151,7 +169,7 @@
 			values(#{item.imageFileNO}, #{item.imageFileName}, #{item.articleNO}, sysdate)
 		</foreach>
 	</insert>
-	
+
 	<!-- 게시물 전체 글 수 조회하기 -->
 	<select
 		id="selectTotArticles"

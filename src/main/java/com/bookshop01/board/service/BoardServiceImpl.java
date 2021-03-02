@@ -32,16 +32,6 @@ public class BoardServiceImpl implements BoardService {
 		return articlesMap;
 	}
 
-	
-	/** 게시물 목록 표시하기 **/
-	/*
-	@Override
-	public List<ArticleVO> listArticles() throws Exception {
-		List<ArticleVO> articlesList = boardDAO.selectAllArticlesList();
-		return articlesList;
-	}
-	*/
-
 	/** 새 글 추가하기 & 답글 추가하기 **/
 	@Override
 	public int addNewArticle(Map articleMap) throws Exception {
@@ -53,6 +43,24 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return articleNO;
 	}
+	
+	/** 게시물 수정하기 **/
+	@Override
+	public void modArticle(Map articleMap) throws Exception {
+		boardDAO.updateArticle(articleMap);
+		
+		// 기존 첨부파일 삭제
+		int[] delFileNO =  (int[]) articleMap.get("delFileNO");
+		if(delFileNO.length != 0 ) {
+			boardDAO.deleteImage(delFileNO);
+		}
+
+		// 새로운 첨부파일 등록
+		List<ImageVO> imageFileList = (ArrayList) articleMap.get("imageFileList");
+		if (imageFileList != null && imageFileList.size() != 0) { 
+			boardDAO.insertNewImage(articleMap);
+		}		
+	}
 
 	/** 특정 게시물 보기 **/
 	@Override
@@ -63,15 +71,6 @@ public class BoardServiceImpl implements BoardService {
 		articleMap.put("article", articleVO);
 		articleMap.put("imageFileList", imageFileList);
 		return articleMap;
-	}
-
-	/** 게시물 수정하기 **/
-	@Override
-	public void modArticle(Map articleMap) throws Exception {
-		/*
-		int articleNO = boardDAO.updateArticle(articleMap);
-		return articleNO;
-		*/
 	}
 
 	/** 게시물 삭제하기 **/

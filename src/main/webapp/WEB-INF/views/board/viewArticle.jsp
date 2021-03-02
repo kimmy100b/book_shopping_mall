@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 <c:set var="article" value="${articleMap.article}" />
 <c:set var="imageFileList" value="${articleMap.imageFileList}" />
 
@@ -16,11 +15,7 @@
 <meta charset="UTF-8">
 <title>글보기</title>
 <style>
-#tr_file_upload {
-	display: none;
-}
-
-#tr_btn_modify {
+#tr_btn_modify, .btn_file_delete {
 	display: none;
 }
 </style>
@@ -32,16 +27,41 @@
      }
  
 	 function fn_enable(obj){
+		 var imgFileName = document.getElementsByClassName("i_imageFileName");
+		 var btnFileDelete = document.getElementsByClassName("btn_file_delete");
+		 for ( var i=0 ; i<imgFileName.length ; i++ ){
+			 btnFileDelete[i].style.display="block"; 
+		 }
 		 document.getElementById("i_title").disabled=false;
 		 document.getElementById("i_content").disabled=false;
-		 document.getElementById("i_imageFileName").disabled=false;
 		 document.getElementById("tr_btn_modify").style.display="block";
-		 document.getElementById("tr_file_upload").style.display="block";
-		 document.getElementById("tr_btn").style.display="none";
+		 $('#btn_modify').hide();
+		 $('#btn_delete').hide();
+	 }
+	 
+	 function fn_delete_file(idx, fileNO, fileName){
+		 var trFileList = ".tr_file_list" + idx;
+		 var trBtnFile = ".tr_btn_file" + idx;
+	 	 $(trFileList).hide();
+	 	 $(trBtnFile).hide();
+	 	 
+	 	 // fileNO 저장
+	 	 if($('#del_files_no').val()===''){
+	 		$('#del_files_no').val(fileNO);
+	 	 } else {
+	 		$('#del_files_no').val($('#del_files_no').val()+','+fileNO);
+	 	 }	
+	 	 
+	 	// fileName 저장 
+	 	if($('#del_files_name').val()===''){
+	 		$('#del_files_name').val(fileName);
+	 	 } else {
+	 		$('#del_files_name').val($('#del_files_name').val()+','+fileName);
+	 	 }
 	 }
 	 
 	 function fn_modify_article(obj){
-		 obj.action="${contextPath}/board/modArticle.do";
+		 obj.action="${contextPath}/board/modArticle.do?articleNO=${article.articleNO}";
 		 obj.submit();
 	 }
 	 
@@ -79,11 +99,13 @@
 		 } 		 
 	 }
 	 
-	 function readURL(input) {
+	 function readURL(input, num) {
+		var preview = '#preview'+num;
+		console.log('preview:'+preview);
 	     if (input.files && input.files[0]) {
 	         var reader = new FileReader();
 	         reader.onload = function (e) {
-	             $('#preview').attr('src', e.target.result);
+	             $(preview).attr('src', e.target.result);
 	         }
 	         reader.readAsDataURL(input.files[0]);
 	     }
@@ -94,12 +116,14 @@
 	<form name="frmArticle" method="post" action="${contextPath}"
 		enctype="multipart/form-data"
 	>
+		<input type="hidden" value="${article.parentNO }" name="parentNO" />
+		<input type="hidden" name="delFilesName" id="del_files_name" />
+		<input type="hidden" name="delFilesNO" id="del_files_no" />
 		<table border=0 align="center">
 			<tr>
 				<td width=150 align="center" bgcolor=#FF9933>글번호</td>
 				<td>
 					<input type="text" value="${article.articleNO }" disabled />
-					<input type="hidden" name="articleNO" value="${article.articleNO}" />
 				</td>
 			</tr>
 			<tr>
@@ -136,7 +160,7 @@
 
 			<c:if test="${not empty imageFileList && null ne imageFileList }">
 				<c:forEach var="item" items="${imageFileList}" varStatus="status">
-					<tr>
+					<tr class="tr_file_list${status.count }">
 						<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
 							이미지${status.count }</td>
 						<td>
@@ -145,14 +169,17 @@
 							/>
 							<img
 								src="${contextPath}/downloadFile.do?articleNO=${article.articleNO}&imageFileName=${item.imageFileName}"
-								id="preview"
+								id="preview${status.count }"
 							/><br>
 						</td>
 					</tr>
-					<tr>
+					<tr class="tr_btn_file${status.count }">
 						<td>
-							<input type="file" name="imageFileName " id="i_imageFileName"
-								disabled onchange="readURL(this);"
+							<input type="file" name="imageFileName " class="i_imageFileName"
+								disabled onchange="readURL(this, ${status.count });"
+							/>
+							<input type="button" value="삭제" class="btn_file_delete"
+								onClick="fn_delete_file(${status.count}, ${item.imageFileNO}, '${item.imageFileName}')"
 							/>
 						</td>
 					</tr>
@@ -166,20 +193,22 @@
 					/>
 				</td>
 			</tr>
-			<tr id="tr_btn_modify" align="center">
-				<td colspan="2">
+			<tr id="tr_btn_modify">
+				<td colspan="2" align="center">
 					<input type=button value="수정반영하기"
 						onClick="fn_modify_article(frmArticle)"
-					>
-					<input type=button value="취소" onClick="backToList(frmArticle)">
+					/>
+					<input type=button value="취소" onClick="backToList(frmArticle)" />
 				</td>
 			</tr>
 
 			<tr id="tr_btn">
 				<td colspan="2" align="center">
 					<c:if test="${memberInfo.member_id == article.id }">
-						<input type="button" value="수정하기" onClick="fn_enable(this.form)">
-						<input type="button" value="삭제하기"
+						<input type="button" id="btn_modify" value="수정하기"
+							onClick="fn_enable(this.form)"
+						>
+						<input type="button" id="btn_delete" value="삭제하기"
 							onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${article.articleNO})"
 						>
 					</c:if>

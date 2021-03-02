@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -50,20 +51,19 @@ public class BoardControllerImpl implements BoardController {
 		// 페이징 기능 구현
 		String _section = request.getParameter("section");
 		String _pageNum = request.getParameter("pageNum");
-		int section = Integer.parseInt(((_section == null ) ? "1" : _section));
-		int pageNum = Integer.parseInt(((_pageNum == null ) ? "1" : _pageNum));
-		
+		int section = Integer.parseInt(((_section == null) ? "1" : _section));
+		int pageNum = Integer.parseInt(((_pageNum == null) ? "1" : _pageNum));
+
 		Map<String, Integer> pagingMap = new HashMap<String, Integer>();
 		pagingMap.put("section", section);
 		pagingMap.put("pageNum", pageNum);
-		
+
 		String viewName = (String) request.getAttribute("viewName");
-		
+
 		Map articlesMap = boardService.listArticles(pagingMap);
 		articlesMap.put("section", section);
 		articlesMap.put("pageNum", pageNum);
-		
-		
+
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("articlesMap", articlesMap);
 		return mav;
@@ -121,7 +121,7 @@ public class BoardControllerImpl implements BoardController {
 				}
 			}
 			message = "<script>";
-			message += " alert('새글을 추가했습니다.');";
+			message += " alert('새 글을 추가했습니다.');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/board/listArticles.do'; ";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
@@ -156,48 +156,92 @@ public class BoardControllerImpl implements BoardController {
 	}
 
 	/** 게시물 수정하기 **/
-	@RequestMapping(value = "/board/modifyArticle.do", method = RequestMethod.GET)
-	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-			throws Exception {
-		/*
-		 * multipartRequest.setCharacterEncoding("utf-8"); String imageFileName = null;
-		 * 
-		 * Map articleMap = new HashMap(); Enumeration enu =
-		 * multipartRequest.getParameterNames(); while (enu.hasMoreElements()) { String
-		 * name = (String) enu.nextElement(); String value =
-		 * multipartRequest.getParameter(name); articleMap.put(name, value); }
-		 * 
-		 * List<String> fileList = upload(multipartRequest); List<ImageVO> imageFileList
-		 * = new ArrayList<ImageVO>(); if (fileList != null && fileList.size() != 0) {
-		 * for (String fileName : fileList) { ImageVO imageVO = new ImageVO();
-		 * imageVO.setImageFileName(fileName); imageFileList.add(imageVO); }
-		 * articleMap.put("imageFileList", imageFileList); } String message;
-		 * ResponseEntity resEnt = null; HttpHeaders responseHeaders = new
-		 * HttpHeaders(); responseHeaders.add("Content-Type",
-		 * "text/html; charset=utf-8"); try { int articleNO =
-		 * boardService.modArticle(articleMap); if (imageFileList != null &&
-		 * imageFileList.size() != 0) { for (ImageVO imageVO : imageFileList) {
-		 * imageFileName = imageVO.getImageFileName(); File srcFile = new
-		 * File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName); File destDir
-		 * = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO); // destDir.mkdirs();
-		 * FileUtils.moveFileToDirectory(srcFile, destDir, true); File oldFile = new
-		 * File(ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + originialFileName); } }
-		 * message = "<script>"; message += " alert('새글을 추가했습니다.');"; message +=
-		 * " location.href='" + multipartRequest.getContextPath() +
-		 * "/board/listArticles.do'; "; message += " </script>"; resEnt = new
-		 * ResponseEntity(message, responseHeaders, HttpStatus.CREATED); } catch
-		 * (Exception e) { if (imageFileList != null && imageFileList.size() != 0) { for
-		 * (ImageVO imageVO : imageFileList) { imageFileName =
-		 * imageVO.getImageFileName(); File srcFile = new File(ARTICLE_IMAGE_REPO +
-		 * "\\" + "temp" + "\\" + imageFileName); srcFile.delete(); } }
-		 * 
-		 * message = " <script>"; message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
-		 * message += " location.href='" + multipartRequest.getContextPath() +
-		 * "/board/articleForm.do'; "; message += " </script>"; resEnt = new
-		 * ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-		 * e.printStackTrace(); } return resEnt;
-		 */
-		return null;
+	@RequestMapping(value = "/board/modArticle.do", method = RequestMethod.POST)
+	public ResponseEntity modArticle(@RequestParam("articleNO") int articleNO,
+			MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
+		multipartRequest.setCharacterEncoding("utf-8");
+		String imageFileName = null;
+
+		Map articleMap = new HashMap();
+		Enumeration enu = multipartRequest.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			String value = multipartRequest.getParameter(name);
+			articleMap.put(name, value);
+		}
+		articleMap.put("articleNO", articleNO);
+
+		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+		String id = memberVO.getMember_id();
+		articleMap.put("id", id);
+
+		List<String> fileList = upload(multipartRequest);
+		List<ImageVO> imageFileList = new ArrayList<ImageVO>();
+		if (fileList != null && fileList.size() != 0) { // 새로 추가할 파일
+			for (String fileName : fileList) {
+				ImageVO imageVO = new ImageVO();
+				imageVO.setImageFileName(fileName);
+				imageFileList.add(imageVO);
+			}
+			articleMap.put("imageFileList", imageFileList);
+		}
+
+		if (articleMap.get("delFilesNO") != null || articleMap.get("delFilesNO") != "") {
+			String _delFileNO = (String) articleMap.get("delFilesNO");
+			String[] sdelFileNO = _delFileNO.split(",");
+			int[] delFileNO = Arrays.stream(sdelFileNO).mapToInt(Integer::parseInt).toArray();
+			articleMap.put("delFileNO", delFileNO);
+		}
+		
+		String message;
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		try {
+			boardService.modArticle(articleMap);
+
+			if (articleMap.get("delFilesName") != null || articleMap.get("delFilesName") != "") { // 삭제한 파일 삭제
+				String _delFileName = (String) articleMap.get("delFilesName");
+				String[] delFileName = _delFileName.split(",");
+				
+				for (String fileName : delFileName) {
+					File delFile = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + fileName);
+					System.out.println(">" + fileName);
+					delFile.delete();
+				}
+			}
+
+			if (imageFileList != null && imageFileList.size() != 0) { // 새로운 파일 추가
+				for (ImageVO imageVO : imageFileList) {
+					imageFileName = imageVO.getImageFileName();
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+					File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO);
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				}
+			}
+			message = "<script>";
+			message += " alert('게시물을 수정하였습니다.');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/listArticles.do'; ";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		} catch (Exception e) {
+			if (imageFileList != null && imageFileList.size() != 0) {
+				for (ImageVO imageVO : imageFileList) {
+					imageFileName = imageVO.getImageFileName();
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+					srcFile.delete();
+				}
+			}
+			message = " <script>";
+			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
+			message += " location.href='" + multipartRequest.getContextPath() + "/board/listArticles.do'; ";
+			message += " </script>";
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
 	}
 
 	/** 게시물 삭제하기 **/
