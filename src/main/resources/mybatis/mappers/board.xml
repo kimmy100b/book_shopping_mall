@@ -117,14 +117,18 @@
 		id="deleteImage"
 		parameterType="java.util.Map"
 	>
-		DELETE FROM t_imageFile
-		WHERE
+	<![CDATA[
+		delete from t_imageFile
+		where imageFileNO in
+		]]>
 		<foreach
 			item="item"
-			collection="array"
-			separator="OR"
+			collection="list"
+			open="("
+			separator=","
+			close=")"
 		>
-			imageFileNO = #{item}
+			#{item}
 		</foreach>
 	</delete>
 

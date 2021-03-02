@@ -50,11 +50,11 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.updateArticle(articleMap);
 		
 		// 기존 첨부파일 삭제
-		int[] delFileNO =  (int[]) articleMap.get("delFileNO");
-		if(delFileNO.length != 0 ) {
+		List<Integer> delFileNO =   (List<Integer>) articleMap.get("delFileNO");
+		if(delFileNO != null && delFileNO.size() != 0) {
 			boardDAO.deleteImage(delFileNO);
 		}
-
+		
 		// 새로운 첨부파일 등록
 		List<ImageVO> imageFileList = (ArrayList) articleMap.get("imageFileList");
 		if (imageFileList != null && imageFileList.size() != 0) { 

@@ -24,7 +24,7 @@ public interface BoardDAO {
 	public void updateArticle(Map articleMap) throws DataAccessException;
 	
 	/** 해당 게시물 첨부파일 삭제하기 **/
-	public void deleteImage(int[] delFileNO) throws DataAccessException; 
+	public void deleteImage(List<Integer> delFileNO) throws DataAccessException; 
 
 	/** 해당 게시물 삭제하기 **/
 	public void deleteArticle(int articleNO) throws DataAccessException;

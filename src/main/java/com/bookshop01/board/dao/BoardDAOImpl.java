@@ -64,7 +64,7 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	/** 해당 게시물 첨부파일 삭제하기 **/
 	@Override
-	public void deleteImage(int[] delFileNO) throws DataAccessException {
+	public void deleteImage(List<Integer> delFileNO) throws DataAccessException {
 		sqlSession.delete("mapper.board.deleteImage", delFileNO);
 	}
 

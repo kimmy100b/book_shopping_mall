@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <title>글보기</title>
 <style>
-#tr_btn_modify, .btn_file_delete {
+#tr_btn_modify, .btn_file_delete, #tr_add_file {
 	display: none;
 }
 </style>
@@ -35,6 +35,7 @@
 		 document.getElementById("i_title").disabled=false;
 		 document.getElementById("i_content").disabled=false;
 		 document.getElementById("tr_btn_modify").style.display="block";
+		 document.getElementById("tr_add_file").style.display="block";
 		 $('#btn_modify').hide();
 		 $('#btn_delete').hide();
 	 }
@@ -109,7 +110,14 @@
 	         }
 	         reader.readAsDataURL(input.files[0]);
 	     }
-	 }  
+	 }
+	 
+	 var cnt = 1;
+		function fn_addFile() {
+			$("#d_file")
+					.append("<br>" + "<input type='file' name='file"+cnt+"' />");
+			cnt++;
+		}
  </script>
 </head>
 <body>
@@ -185,6 +193,17 @@
 					</tr>
 				</c:forEach>
 			</c:if>
+			<tr id="tr_add_file">
+				<td align="right">이미지파일 첨부</td>
+				<td align="left">
+					<input type="button" value="파일 추가" onClick="fn_addFile()" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div id="d_file"></div>
+				</td>
+			</tr>
 			<tr>
 				<td width="150" align="center" bgcolor="#FF9933">등록일자</td>
 				<td>

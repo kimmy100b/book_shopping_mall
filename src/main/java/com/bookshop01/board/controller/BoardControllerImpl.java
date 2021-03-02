@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,9 +89,7 @@ public class BoardControllerImpl implements BoardController {
 
 		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
 		HttpSession session = multipartRequest.getSession();
-		System.out.println(session.getAttribute("memberInfo"));
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-		System.out.println(memberVO);
 		String id = memberVO.getMember_id();
 
 		articleMap.put("id", id);
@@ -187,11 +186,11 @@ public class BoardControllerImpl implements BoardController {
 			}
 			articleMap.put("imageFileList", imageFileList);
 		}
-
-		if (articleMap.get("delFilesNO") != null || articleMap.get("delFilesNO") != "") {
-			String _delFileNO = (String) articleMap.get("delFilesNO");
-			String[] sdelFileNO = _delFileNO.split(",");
-			int[] delFileNO = Arrays.stream(sdelFileNO).mapToInt(Integer::parseInt).toArray();
+		
+		String _delFileNO = (String) articleMap.get("delFilesNO");
+		if (_delFileNO.length() != 0 && _delFileNO != null) {
+			List<String> sdelFileNO = Arrays.asList(_delFileNO.split(","));
+			List<Integer> delFileNO = sdelFileNO.stream().map(Integer::parseInt).collect(Collectors.toList());
 			articleMap.put("delFileNO", delFileNO);
 		}
 		
@@ -201,14 +200,12 @@ public class BoardControllerImpl implements BoardController {
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		try {
 			boardService.modArticle(articleMap);
-
-			if (articleMap.get("delFilesName") != null || articleMap.get("delFilesName") != "") { // 삭제한 파일 삭제
+			if (_delFileNO.length() != 0 && _delFileNO != null) { // 삭제한 파일 삭제
 				String _delFileName = (String) articleMap.get("delFilesName");
 				String[] delFileName = _delFileName.split(",");
 				
 				for (String fileName : delFileName) {
 					File delFile = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + fileName);
-					System.out.println(">" + fileName);
 					delFile.delete();
 				}
 			}
@@ -314,9 +311,7 @@ public class BoardControllerImpl implements BoardController {
 
 		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
 		HttpSession session = multipartRequest.getSession();
-		System.out.println(session.getAttribute("memberInfo"));
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-		System.out.println(memberVO);
 		String id = memberVO.getMember_id();
 		articleMap.put("id", id);
 
