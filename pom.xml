@@ -6,8 +6,8 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring</groupId>
-	<artifactId>mytest04</artifactId>
-	<name>spring_test04</name>
+	<artifactId>bookshop</artifactId>
+	<name>bookshop</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -157,7 +157,7 @@
 			<version>1.1.0</version>
 		</dependency>
 
-		<dependency><!-- sqlSessionFactory 만들때 없으면 에러남 -->
+		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
 			<version>2.2</version>

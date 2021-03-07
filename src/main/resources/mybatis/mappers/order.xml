@@ -3,6 +3,10 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 
+CREATE SEQUENCE seq_order_id;
+CREATE SEQUENCE order_seq_num; 
+-->
 <mapper namespace="mapper.order">
 	<!-- 리절트 맵 정의 -->
 	<resultMap

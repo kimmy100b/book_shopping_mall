@@ -129,15 +129,19 @@
 		<input type="hidden" name="delFilesNO" id="del_files_no" />
 		<table border=0 align="center">
 			<tr>
-				<td width=150 align="center" bgcolor=#FF9933>글번호</td>
+				<td width="150" align="center" bgcolor=#FF9933>글번호</td>
 				<td>
-					<input type="text" value="${article.articleNO }" disabled />
+					<input type="text" value="${article.articleNO }" disabled
+						style="width: 100%"
+					/>
 				</td>
 			</tr>
 			<tr>
 				<td width="150" align="center" bgcolor="#FF9933">작성자 아이디</td>
 				<td>
-					<input type=text value="${article.id }" name="writer" disabled />
+					<input type=text value="${article.id }" name="writer" disabled
+						style="width: 100%"
+					/>
 				</td>
 			</tr>
 			<tr>
@@ -146,12 +150,12 @@
 					<c:choose>
 						<c:when test="${article.parentNO } ne '0'">
 							<input type=text value="[답글]${article.title }" name="title"
-								id="i_title" disabled
+								id="i_title" disabled style="width: 100%"
 							/>
 						</c:when>
 						<c:otherwise>
 							<input type=text value="${article.title }" name="title"
-								id="i_title" disabled
+								id="i_title" disabled style="width: 100%"
 							/>
 						</c:otherwise>
 					</c:choose>

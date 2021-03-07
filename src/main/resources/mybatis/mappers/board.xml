@@ -54,7 +54,7 @@
     <![CDATA[
       SELECT * FROM ( 
       		SELECT ROWNUM as recNum, 
-      				LVL, 
+      				lvl, 
       				articleNO, 
       				parentNO, 
       				title, 
@@ -63,7 +63,7 @@
       				imageFileName, 
       				id
       				FROM (
-      					SELECT level as LVL,
+      					SELECT level as lvl,
       							articleNO,
       							parentNO,
       							title,

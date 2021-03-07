@@ -22,7 +22,7 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-	
+
 	function backToList(obj) {
 		obj.action = "${contextPath}/board/listArticles.do";
 		obj.submit();
@@ -41,22 +41,21 @@
 	<h1 style="text-align: center">글쓰기</h1>
 	<form name="articleForm" method="post"
 		action="${contextPath}/board/addNewArticle.do"
-		enctype="multipart/form-data"
-		accept-charset="UTF-8"
+		enctype="multipart/form-data" accept-charset="UTF-8"
 	>
 		<table border="0" align="center">
 			<tr>
 				<td align="right">작성자</td>
 				<td colspan=2 align="left">
 					<input type="text" size="20" maxlength="100"
-						value="${memberInfo.member_id }" readonly
+						value="${memberInfo.member_id }" readonly required
 					/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right">글제목:</td>
 				<td colspan="2">
-					<input type="text" size="67" maxlength="500" name="title" />
+					<input type="text" size="67" maxlength="500" name="title" required />
 				</td>
 			</tr>
 			<tr>
@@ -64,7 +63,9 @@
 					<br>글내용:
 				</td>
 				<td colspan=2>
-					<textarea name="content" rows="10" cols="65" maxlength="4000"></textarea>
+					<textarea name="content" rows="10" cols="65" maxlength="4000"
+						required
+					></textarea>
 				</td>
 			</tr>
 			<tr>

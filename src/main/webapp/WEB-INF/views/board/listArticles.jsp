@@ -75,8 +75,8 @@
 						<td align='left' width="35%">
 							<span style="padding-right: 30px"></span>
 							<c:choose>
-								<c:when test='${article.level > 1 }'>
-									<c:forEach begin="1" end="${article.level }" step="1">
+								<c:when test='${article.lvl > 1 }'>
+									<c:forEach begin="1" end="${article.lvl }" step="1">
 										<span style="padding-left: 10px"></span>
 									</c:forEach>
 									<span style="font-size: 12px;">[답변]</span>
@@ -130,7 +130,7 @@
 
 				<c:when test="${totArticles< 100 }">
 					<!--등록된 글 개수가 100개 미만인 경우  -->
-					<c:forEach var="page" begin="1" end="${totArticles/10 +1}" step="1">
+					<c:forEach var="page" begin="1" end="${(totArticles-1)/10 +1}" step="1">
 						<c:choose>
 							<c:when test="${page==pageNum }">
 								<a class="sel-page"

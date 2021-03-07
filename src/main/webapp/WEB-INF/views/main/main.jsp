@@ -134,7 +134,7 @@
 			onClick="javascript:fn_hidePopup();"> 
 			<img src="${contextPath}/resources/image/close.png" id="close" />
 		</a> 
-		<h5>신상품이 출시 되었습니다.</h5>
+		<h5>신상품이 출시 되었습니다!</h5>
 		<img width="695" src="${contextPath}/resources/image/test.jpg" />
 		<!-- <h5>
 			오늘 그만 보기 <input type="checkbox" onClick="fn_hidePopup()" />
