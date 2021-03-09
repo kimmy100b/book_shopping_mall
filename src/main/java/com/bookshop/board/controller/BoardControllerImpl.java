@@ -186,14 +186,14 @@ public class BoardControllerImpl implements BoardController {
 			}
 			articleMap.put("imageFileList", imageFileList);
 		}
-		
+
 		String _delFileNO = (String) articleMap.get("delFilesNO");
 		if (_delFileNO.length() != 0 && _delFileNO != null) {
 			List<String> sdelFileNO = Arrays.asList(_delFileNO.split(","));
 			List<Integer> delFileNO = sdelFileNO.stream().map(Integer::parseInt).collect(Collectors.toList());
 			articleMap.put("delFileNO", delFileNO);
 		}
-		
+
 		String message;
 		ResponseEntity resEnt = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -203,7 +203,7 @@ public class BoardControllerImpl implements BoardController {
 			if (_delFileNO.length() != 0 && _delFileNO != null) { // 삭제한 파일 삭제
 				String _delFileName = (String) articleMap.get("delFilesName");
 				String[] delFileName = _delFileName.split(",");
-				
+
 				for (String fileName : delFileName) {
 					File delFile = new File(ARTICLE_IMAGE_REPO + "/" + articleNO + "/" + fileName);
 					delFile.delete();
@@ -245,8 +245,9 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/removeArticle.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO,
+			MultipartHttpServletRequest multipartRequest, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		response.setContentType("text/html; charset=UTF-8");
 		String message;
 		ResponseEntity resEnt = null;
@@ -259,14 +260,14 @@ public class BoardControllerImpl implements BoardController {
 
 			message = "<script>";
 			message += " alert('글을 삭제했습니다.');";
-			message += " location.href='" + request.getContextPath() + "/board/listArticles.do';";
+			message += " location.href='" + request.getContextPath() + "/board/articleForm.do'; ";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 
 		} catch (Exception e) {
 			message = "<script>";
 			message += " alert('작업 중 오류가 발생했습니다.다시 시도해 주세요.');";
-			message += " location.href='" + request.getContextPath() + "/board/listArticles.do';";
+			message += " location.href='" + request.getContextPath() + "/board/articleForm.do'; ";
 			message += " </script>";
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
 			e.printStackTrace();
@@ -415,5 +416,12 @@ public class BoardControllerImpl implements BoardController {
 			}
 		}
 		return fileList;
+	}
+
+	@Override
+	public ResponseEntity removeArticle(int articleNO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

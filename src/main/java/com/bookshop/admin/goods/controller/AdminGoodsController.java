@@ -20,7 +20,7 @@ public interface AdminGoodsController {
 			throws Exception;
 
 	/** 관리자 상품 수정하기 **/
-	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") String goods_id,
+	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") int goods_id,
 			@RequestParam("mod_type") String mod_type, @RequestParam("value") String value, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 

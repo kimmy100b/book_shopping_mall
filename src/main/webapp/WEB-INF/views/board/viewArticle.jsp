@@ -165,7 +165,7 @@
 				<td width="150" align="center" bgcolor="#FF9933">내용</td>
 				<td>
 					<textarea rows="20" cols="60" name="content" id="i_content"
-						disabled
+						disabled style="width: 100%"
 					/>${article.content }</textarea>
 				</td>
 			</tr>

@@ -102,7 +102,17 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		while (enu.hasMoreElements()) {
 			String name = (String) enu.nextElement();
 			String value = multipartRequest.getParameter(name);
-			newGoodsMap.put(name, value);
+			
+			if(name.equals("goods_price")
+					||name.equals("goods_sales_price")
+					||name.equals("goods_point")
+					||name.equals("goods_total_page")
+					||name.equals("goods_delivery_price")) {
+				int intValue = Integer.parseInt(value);
+				newGoodsMap.put(name, intValue);
+			}else {
+				newGoodsMap.put(name, value);
+			}	
 		}
 
 		// 로그인 시 세션에 저장된 회원 정보에서 글쓴이 아이디를 얻어와서 Map에 저장합니다.
@@ -144,7 +154,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 					srcFile.delete();
 				}
 			}
-
 			message = "<script>";
 			message += " alert('오류가 발생했습니다. 다시 시도해 주세요');";
 			message += " location.href='" + multipartRequest.getContextPath() + "/admin/goods/addNewGoodsForm.do';";
@@ -170,14 +179,22 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 
 	/** 관리자 상품 수정하기 **/
 	@RequestMapping(value = "/modifyGoodsInfo.do", method = { RequestMethod.POST })
-	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") String goods_id,
+	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") int goods_id,
 			@RequestParam("attribute") String attribute, @RequestParam("value") String value,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// System.out.println("modifyGoodsInfo");
-
-		Map<String, String> goodsMap = new HashMap<String, String>();
+	
+		Map goodsMap = new HashMap();
 		goodsMap.put("goods_id", goods_id);
-		goodsMap.put(attribute, value);
+		if(attribute.equals("goods_price")
+				||attribute.equals("goods_sales_price")
+				||attribute.equals("goods_point")
+				||attribute.equals("goods_total_page")
+				||attribute.equals("goods_delivery_price")) {
+			int intValue = Integer.parseInt(value);
+			goodsMap.put(attribute, intValue);
+		}else {
+			goodsMap.put(attribute, value);
+		}	
 		adminGoodsService.modifyGoodsInfo(goodsMap);
 
 		String message = null;
@@ -209,7 +226,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 	@RequestMapping(value = "/addNewGoodsImage.do", method = { RequestMethod.POST })
 	public void addNewGoodsImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception {
-		System.out.println("addNewGoodsImage");
 		multipartRequest.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		String imageFileName = null;

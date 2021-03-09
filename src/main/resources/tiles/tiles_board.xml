@@ -6,7 +6,7 @@
 <!-- cs고객센터 : 게시판 -->
 <tiles-definitions>
       <definition name="/board/listArticles" extends="baseLayout">
-       <put-attribute name="title" value="고객센터 글목록칭" />
+       <put-attribute name="title" value="고객센터 글목록창" />
        <put-attribute name="body" value="/WEB-INF/views/board/listArticles.jsp" />
     </definition>
     

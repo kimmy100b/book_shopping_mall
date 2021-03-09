@@ -38,4 +38,8 @@ public interface BoardController {
 	/** 답글 추가하기 **/
 	public ResponseEntity addReply(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
 			throws Exception;
+
+	/** 게시물 삭제하기 **/
+	ResponseEntity removeArticle(int articleNO, MultipartHttpServletRequest multipartRequest,
+			HttpServletRequest request, HttpServletResponse response) throws Exception;
 }
